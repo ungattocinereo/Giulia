@@ -8,28 +8,31 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#C97A63',
-          dark: '#B05D47',
-          light: '#E8C5A1',
+          DEFAULT: '#E8B4B8',
+          dark: '#D89CA0',
+          light: '#F5D9DB',
         },
         secondary: {
-          DEFAULT: '#D9BFA0',
-          dark: '#C3A880',
-          light: '#F5E6D3',
+          DEFAULT: '#D4C5E0',
+          dark: '#BCADD0',
+          light: '#EAE3F0',
         },
         accent: {
-          DEFAULT: '#F4A896',
-          dark: '#E88C78',
+          DEFAULT: '#C9E4DE',
+          dark: '#B3D5CE',
+          light: '#E3F2EF',
         },
-        warm: {
-          beige: '#F5E6D3',
-          sand: '#E8D5C0',
-          terracotta: '#C97A63',
+        pastel: {
+          pink: '#F5D9DB',
+          lavender: '#EAE3F0',
+          mint: '#E3F2EF',
+          peach: '#F8E5D9',
+          sky: '#D9E8F5',
         },
       },
       fontFamily: {
-        serif: ['Playfair Display', 'Georgia', 'serif'],
-        sans: ['Lora', 'Georgia', 'serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['Poppins', 'Inter', 'system-ui', 'sans-serif'],
       },
     },
   },
