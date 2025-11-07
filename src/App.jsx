@@ -205,77 +205,106 @@ export default function App() {
       {/* ============================================ */}
       {/* HERO SECTION */}
       {/* ============================================ */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-primary to-secondary text-white">
+      <section className="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-primary via-primary-dark to-primary">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 text-balance">
-              Юлия Попова
-            </h1>
-            <p className="text-xl md:text-2xl mb-6 opacity-90">
-              Психолог | Тьютор | Профориентолог
-            </p>
-            <p className="text-lg md:text-xl mb-10 leading-relaxed max-w-3xl mx-auto opacity-90">
-              Помогаю детям, подросткам и взрослым найти свой путь: в учёбе, карьере,
-              отношениях с собой и близкими. Многофункциональный специалист, который
-              закроет ваши потребности комплексно.
-            </p>
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <button
-                onClick={() => scrollToSection('contacts')}
-                className="bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-all transform hover:scale-105 shadow-lg"
-              >
-                Записаться на встречу
-              </button>
-              <button
-                onClick={() => scrollToSection('about')}
-                className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-all"
-              >
-                Узнать больше
-              </button>
-            </div>
+              {/* Avatar Section */}
+              <div className="flex-shrink-0 order-1 md:order-2">
+                <div className="relative">
+                  {/* Decorative rings */}
+                  <div className="absolute inset-0 rounded-full bg-white/10 animate-pulse"></div>
+                  <div className="absolute -inset-4 rounded-full bg-white/5"></div>
 
-            {/* Social Links */}
-            <div className="flex justify-center gap-6">
-              <a
-                href="https://t.me/username"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all transform hover:scale-110"
-                aria-label="Telegram"
-              >
-                <PaperPlaneTilt size={20} />
-              </a>
-              <a
-                href="https://wa.me/79XXXXXXXXX"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all transform hover:scale-110"
-                aria-label="WhatsApp"
-              >
-                <ChatCircle size={20} />
-              </a>
-              <a
-                href="https://vk.com/username"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all transform hover:scale-110"
-                aria-label="VK"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.15 14.79c-.29.34-.85.54-1.69.54h-1.1c-.71 0-1.07-.24-1.58-.79-.48-.52-.92-.95-1.38-.95-.09 0-.18.02-.27.05-.44.14-.69.64-.69 1.4 0 .45-.36.69-1.01.69-.8 0-1.67-.14-2.45-.74-1.17-.9-2.18-2.63-3.17-4.67-.03-.07-.05-.14-.05-.21 0-.24.19-.43.55-.43h1.1c.46 0 .63.2.8.67.81 2.12 2.16 3.81 2.72 3.81.1 0 .19-.03.27-.09.36-.26.28-1.01.24-1.58-.04-.91-.09-1.95.51-2.38.19-.14.48-.2 1.01-.2h1.55c.46 0 .6.25.6.64v2.96c0 .46.2.6.33.6.24 0 .47-.14.93-.6.96-1.01 1.64-2.58 1.64-2.58.09-.17.26-.33.55-.33h1.1c.71 0 .86.36.71.85-.21.72-.96 1.88-1.79 2.94-.19.24-.25.36 0 .64.19.22.81.79 1.22 1.28.71.81 1.25 1.49 1.39 1.97.14.47-.1.72-.73.72z"/>
-                </svg>
-              </a>
-              <a
-                href="https://instagram.com/username"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all transform hover:scale-110"
-                aria-label="Instagram"
-              >
-                <InstagramLogo size={20} />
-              </a>
+                  {/* Avatar */}
+                  <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/30 shadow-2xl overflow-hidden">
+                    <div className="w-full h-full flex items-center justify-center">
+                      <UserCircle size={160} className="text-white/40" weight="light" />
+                    </div>
+                  </div>
+
+                  {/* Decorative badge */}
+                  <div className="absolute bottom-4 right-4 bg-accent text-white px-4 py-2 rounded-full shadow-lg text-sm font-semibold">
+                    ✨ Онлайн
+                  </div>
+                </div>
+              </div>
+
+              {/* Text Content */}
+              <div className="flex-1 text-white order-2 md:order-1 text-center md:text-left">
+                <div className="inline-block mb-4 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium">
+                  Психолог • Тьютор • Профориентолог
+                </div>
+
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance">
+                  Юлия Попова
+                </h1>
+
+                <p className="text-lg md:text-xl mb-8 leading-relaxed text-white/90 max-w-2xl">
+                  Помогаю детям, подросткам и взрослым найти свой путь в учёбе, карьере
+                  и отношениях. Комплексный подход к решению ваших задач.
+                </p>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center md:justify-start">
+                  <button
+                    onClick={() => scrollToSection('contacts')}
+                    className="bg-white text-primary px-8 py-4 rounded-xl font-semibold hover:bg-neutral-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                  >
+                    Записаться на консультацию
+                  </button>
+                  <button
+                    onClick={() => scrollToSection('about')}
+                    className="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/20 transition-all"
+                  >
+                    Узнать больше
+                  </button>
+                </div>
+
+                {/* Social Links */}
+                <div className="flex gap-3 justify-center md:justify-start">
+                  <a
+                    href="https://t.me/username"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11 h-11 bg-white/15 hover:bg-white/25 backdrop-blur-sm rounded-full flex items-center justify-center transition-all hover:scale-110"
+                    aria-label="Telegram"
+                  >
+                    <PaperPlaneTilt size={20} weight="fill" />
+                  </a>
+                  <a
+                    href="https://wa.me/79XXXXXXXXX"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11 h-11 bg-white/15 hover:bg-white/25 backdrop-blur-sm rounded-full flex items-center justify-center transition-all hover:scale-110"
+                    aria-label="WhatsApp"
+                  >
+                    <ChatCircle size={20} weight="fill" />
+                  </a>
+                  <a
+                    href="https://vk.com/username"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11 h-11 bg-white/15 hover:bg-white/25 backdrop-blur-sm rounded-full flex items-center justify-center transition-all hover:scale-110"
+                    aria-label="VK"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.15 14.79c-.29.34-.85.54-1.69.54h-1.1c-.71 0-1.07-.24-1.58-.79-.48-.52-.92-.95-1.38-.95-.09 0-.18.02-.27.05-.44.14-.69.64-.69 1.4 0 .45-.36.69-1.01.69-.8 0-1.67-.14-2.45-.74-1.17-.9-2.18-2.63-3.17-4.67-.03-.07-.05-.14-.05-.21 0-.24.19-.43.55-.43h1.1c.46 0 .63.2.8.67.81 2.12 2.16 3.81 2.72 3.81.1 0 .19-.03.27-.09.36-.26.28-1.01.24-1.58-.04-.91-.09-1.95.51-2.38.19-.14.48-.2 1.01-.2h1.55c.46 0 .6.25.6.64v2.96c0 .46.2.6.33.6.24 0 .47-.14.93-.6.96-1.01 1.64-2.58 1.64-2.58.09-.17.26-.33.55-.33h1.1c.71 0 .86.36.71.85-.21.72-.96 1.88-1.79 2.94-.19.24-.25.36 0 .64.19.22.81.79 1.22 1.28.71.81 1.25 1.49 1.39 1.97.14.47-.1.72-.73.72z"/>
+                    </svg>
+                  </a>
+                  <a
+                    href="https://instagram.com/username"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11 h-11 bg-white/15 hover:bg-white/25 backdrop-blur-sm rounded-full flex items-center justify-center transition-all hover:scale-110"
+                    aria-label="Instagram"
+                  >
+                    <InstagramLogo size={20} weight="fill" />
+                  </a>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
