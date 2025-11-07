@@ -11,6 +11,8 @@
 
 ## Установка и запуск
 
+### Локальная разработка
+
 ```bash
 # Установка зависимостей
 npm install
@@ -23,6 +25,43 @@ npm run build
 
 # Предпросмотр production сборки
 npm run preview
+```
+
+### Запуск в Docker
+
+#### Production режим (с nginx)
+
+```bash
+# Сборка и запуск через docker-compose
+docker-compose up -d
+
+# Или напрямую через docker
+docker build -t yulia-popova-landing .
+docker run -d -p 8080:80 yulia-popova-landing
+
+# Приложение будет доступно по адресу http://localhost:8080
+```
+
+#### Development режим (с hot-reload)
+
+```bash
+# Запуск dev-сервера в Docker с автоперезагрузкой
+docker-compose --profile dev up dev
+
+# Приложение будет доступно по адресу http://localhost:5173
+```
+
+#### Управление контейнерами
+
+```bash
+# Остановить контейнеры
+docker-compose down
+
+# Пересобрать образ
+docker-compose build
+
+# Просмотр логов
+docker-compose logs -f
 ```
 
 ## Структура проекта
