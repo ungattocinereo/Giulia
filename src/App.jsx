@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Menu,
+  List,
   X,
-  Send,
-  MessageCircle,
-  Mail,
+  PaperPlaneTilt,
+  ChatCircle,
+  Envelope,
   Phone,
-  Instagram,
-  ChevronDown,
+  InstagramLogo,
+  CaretDown,
   UserCircle,
   Briefcase,
   Users,
   Compass,
-  Route,
-  HeartHandshake,
+  Path,
+  Handshake,
   Check,
   CreditCard,
   ArrowRight,
-  ChevronUp,
-} from 'lucide-react';
+  CaretUp,
+} from 'phosphor-react';
 import { sendToTelegram } from './utils/telegram';
 
 // ============================================
@@ -160,7 +160,7 @@ export default function App() {
               className="md:hidden text-gray-700"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMenuOpen ? <X size={24} /> : <List size={24} />}
             </button>
           </div>
 
@@ -245,7 +245,7 @@ export default function App() {
                 className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all transform hover:scale-110"
                 aria-label="Telegram"
               >
-                <Send size={20} />
+                <PaperPlaneTilt size={20} />
               </a>
               <a
                 href="https://wa.me/79XXXXXXXXX"
@@ -254,7 +254,7 @@ export default function App() {
                 className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all transform hover:scale-110"
                 aria-label="WhatsApp"
               >
-                <MessageCircle size={20} />
+                <ChatCircle size={20} />
               </a>
               <a
                 href="https://vk.com/username"
@@ -274,7 +274,7 @@ export default function App() {
                 className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all transform hover:scale-110"
                 aria-label="Instagram"
               >
-                <Instagram size={20} />
+                <InstagramLogo size={20} />
               </a>
             </div>
           </div>
@@ -467,7 +467,7 @@ export default function App() {
             <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow border-2 border-primary/20">
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-14 h-14 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Route size={28} className="text-secondary" />
+                  <Path size={28} className="text-secondary" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
@@ -511,7 +511,7 @@ export default function App() {
             <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <HeartHandshake size={28} className="text-green-600" />
+                  <Handshake size={28} className="text-green-600" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">Всё включено</h3>
@@ -703,9 +703,9 @@ export default function App() {
                   Как проходит встреча-знакомство?
                 </span>
                 {openFaq === 1 ? (
-                  <ChevronUp className="text-primary flex-shrink-0" size={24} />
+                  <CaretUp className="text-primary flex-shrink-0" size={24} />
                 ) : (
-                  <ChevronDown className="text-gray-400 flex-shrink-0" size={24} />
+                  <CaretDown className="text-gray-400 flex-shrink-0" size={24} />
                 )}
               </button>
               {openFaq === 1 && (
@@ -731,9 +731,9 @@ export default function App() {
                   В чём отличие психолога от тьютора?
                 </span>
                 {openFaq === 2 ? (
-                  <ChevronUp className="text-primary flex-shrink-0" size={24} />
+                  <CaretUp className="text-primary flex-shrink-0" size={24} />
                 ) : (
-                  <ChevronDown className="text-gray-400 flex-shrink-0" size={24} />
+                  <CaretDown className="text-gray-400 flex-shrink-0" size={24} />
                 )}
               </button>
               {openFaq === 2 && (
@@ -766,9 +766,9 @@ export default function App() {
                   Как понять, какой пакет мне подходит?
                 </span>
                 {openFaq === 3 ? (
-                  <ChevronUp className="text-primary flex-shrink-0" size={24} />
+                  <CaretUp className="text-primary flex-shrink-0" size={24} />
                 ) : (
-                  <ChevronDown className="text-gray-400 flex-shrink-0" size={24} />
+                  <CaretDown className="text-gray-400 flex-shrink-0" size={24} />
                 )}
               </button>
               {openFaq === 3 && (
@@ -803,9 +803,9 @@ export default function App() {
                   Работаете ли вы онлайн?
                 </span>
                 {openFaq === 4 ? (
-                  <ChevronUp className="text-primary flex-shrink-0" size={24} />
+                  <CaretUp className="text-primary flex-shrink-0" size={24} />
                 ) : (
-                  <ChevronDown className="text-gray-400 flex-shrink-0" size={24} />
+                  <CaretDown className="text-gray-400 flex-shrink-0" size={24} />
                 )}
               </button>
               {openFaq === 4 && (
@@ -829,9 +829,9 @@ export default function App() {
                   Как долго длится работа?
                 </span>
                 {openFaq === 5 ? (
-                  <ChevronUp className="text-primary flex-shrink-0" size={24} />
+                  <CaretUp className="text-primary flex-shrink-0" size={24} />
                 ) : (
-                  <ChevronDown className="text-gray-400 flex-shrink-0" size={24} />
+                  <CaretDown className="text-gray-400 flex-shrink-0" size={24} />
                 )}
               </button>
               {openFaq === 5 && (
@@ -875,7 +875,7 @@ export default function App() {
                   className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl hover:shadow-lg transition-all group"
                 >
                   <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Send size={24} className="text-white" />
+                    <PaperPlaneTilt size={24} className="text-white" />
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">Telegram</p>
@@ -891,7 +891,7 @@ export default function App() {
                   className="flex items-center gap-4 p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-xl hover:shadow-lg transition-all group"
                 >
                   <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <MessageCircle size={24} className="text-white" />
+                    <ChatCircle size={24} className="text-white" />
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">WhatsApp</p>
@@ -905,7 +905,7 @@ export default function App() {
                   className="flex items-center gap-4 p-4 bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl hover:shadow-lg transition-all group"
                 >
                   <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Mail size={24} className="text-white" />
+                    <Envelope size={24} className="text-white" />
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">Email</p>
@@ -950,7 +950,7 @@ export default function App() {
                     className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center hover:from-purple-600 hover:to-pink-600 transition-colors"
                     aria-label="Instagram"
                   >
-                    <Instagram size={24} className="text-white" />
+                    <InstagramLogo size={24} className="text-white" />
                   </a>
                 </div>
               </div>
@@ -1111,7 +1111,7 @@ export default function App() {
                 className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all"
                 aria-label="Telegram"
               >
-                <Send size={18} />
+                <PaperPlaneTilt size={18} />
               </a>
               <a
                 href="https://wa.me/79XXXXXXXXX"
@@ -1120,7 +1120,7 @@ export default function App() {
                 className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all"
                 aria-label="WhatsApp"
               >
-                <MessageCircle size={18} />
+                <ChatCircle size={18} />
               </a>
               <a
                 href="https://vk.com/username"
@@ -1140,7 +1140,7 @@ export default function App() {
                 className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all"
                 aria-label="Instagram"
               >
-                <Instagram size={18} />
+                <InstagramLogo size={18} />
               </a>
             </div>
 

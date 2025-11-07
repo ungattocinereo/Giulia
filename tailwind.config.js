@@ -8,26 +8,26 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#E8B4B8',
-          dark: '#D89CA0',
-          light: '#F5D9DB',
+          DEFAULT: '#8B7AB8',
+          dark: '#6F5E99',
+          light: '#A895CC',
         },
         secondary: {
-          DEFAULT: '#D4C5E0',
-          dark: '#BCADD0',
-          light: '#EAE3F0',
+          DEFAULT: '#E5A491',
+          dark: '#D88970',
+          light: '#F0BDB0',
         },
         accent: {
-          DEFAULT: '#C9E4DE',
-          dark: '#B3D5CE',
-          light: '#E3F2EF',
+          DEFAULT: '#7AB8B8',
+          dark: '#5FA3A3',
+          light: '#98CACA',
         },
         pastel: {
-          pink: '#F5D9DB',
-          lavender: '#EAE3F0',
-          mint: '#E3F2EF',
-          peach: '#F8E5D9',
-          sky: '#D9E8F5',
+          lavender: '#E8E1F0',
+          peach: '#F5E6E1',
+          mint: '#E1F0F0',
+          cream: '#F5F0E8',
+          sky: '#E1EAF5',
         },
       },
       fontFamily: {
