@@ -19,6 +19,7 @@ import {
   ArrowRight,
   ChevronUp,
 } from 'lucide-react';
+import { sendToTelegram } from './utils/telegram';
 
 // ============================================
 // MAIN APP COMPONENT
@@ -64,7 +65,7 @@ export default function App() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.consent) {
@@ -72,29 +73,34 @@ export default function App() {
       return;
     }
 
-    // TODO: Replace with actual Telegram Bot API integration
-    console.log('Form submitted:', formData);
+    setFormStatus('loading');
 
-    // For now, create mailto link as fallback
-    const subject = 'Заявка с сайта';
-    const body = `
-      Имя: ${formData.name}
-      Контакт: ${formData.contact}
-      Способ связи: ${formData.method}
-      Сообщение: ${formData.message}
-    `;
+    try {
+      // Отправляем заявку в Telegram
+      await sendToTelegram(formData);
 
-    setFormStatus('success');
-    setTimeout(() => {
-      setFormStatus(null);
-      setFormData({
-        name: '',
-        contact: '',
-        method: 'telegram',
-        message: '',
-        consent: false,
-      });
-    }, 3000);
+      setFormStatus('success');
+
+      // Очищаем форму через 3 секунды
+      setTimeout(() => {
+        setFormStatus(null);
+        setFormData({
+          name: '',
+          contact: '',
+          method: 'telegram',
+          message: '',
+          consent: false,
+        });
+      }, 3000);
+    } catch (error) {
+      console.error('Error sending form:', error);
+      setFormStatus('error');
+
+      // Показываем ошибку 5 секунд
+      setTimeout(() => {
+        setFormStatus(null);
+      }, 5000);
+    }
   };
 
   return (
@@ -1044,17 +1050,37 @@ export default function App() {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary-dark transition-colors font-semibold flex items-center justify-center gap-2"
+                    disabled={formStatus === 'loading'}
+                    className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary-dark transition-colors font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Отправить заявку
-                    <ArrowRight size={20} />
+                    {formStatus === 'loading' ? (
+                      <>
+                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Отправка...
+                      </>
+                    ) : (
+                      <>
+                        Отправить заявку
+                        <ArrowRight size={20} />
+                      </>
+                    )}
                   </button>
 
                   {/* Status Messages */}
                   {formStatus === 'success' && (
                     <div className="bg-green-50 border-2 border-green-200 text-green-800 px-4 py-3 rounded-lg">
-                      <p className="font-semibold">Заявка отправлена!</p>
+                      <p className="font-semibold">✅ Заявка отправлена!</p>
                       <p className="text-sm">Я свяжусь с вами в ближайшее время.</p>
+                    </div>
+                  )}
+
+                  {formStatus === 'error' && (
+                    <div className="bg-red-50 border-2 border-red-200 text-red-800 px-4 py-3 rounded-lg">
+                      <p className="font-semibold">❌ Ошибка отправки</p>
+                      <p className="text-sm">Попробуйте еще раз или свяжитесь со мной напрямую.</p>
                     </div>
                   )}
                 </form>

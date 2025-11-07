@@ -58,7 +58,32 @@ npm run preview
 - [ ] Email: `julia@example.com`
 - [ ] Телефон: `+7 XXX XXX XX XX`
 - [ ] Реальные цены на услуги
-- [ ] Интеграция с Telegram Bot API для формы (опционально)
+- [x] Интеграция с Telegram Bot API для формы
+
+## Настройка Telegram Bot
+
+Сайт интегрирован с Telegram Bot для автоматического получения заявок.
+
+### Шаги настройки:
+
+1. **Создайте .env файл** в корне проекта:
+```env
+VITE_TELEGRAM_BOT_TOKEN=your_bot_token_here
+VITE_TELEGRAM_CHAT_ID=your_chat_id_here
+```
+
+2. **Получите токен бота:**
+   - Напишите [@BotFather](https://t.me/BotFather) в Telegram
+   - Создайте нового бота: `/newbot`
+   - Скопируйте токен
+
+3. **Получите Chat ID:**
+   - Добавьте бота в группу/канал
+   - Отправьте сообщение в чат
+   - Перейдите: `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates`
+   - Найдите `chat.id` в ответе
+
+⚠️ **Безопасность:** Файл `.env` добавлен в `.gitignore` и не коммитится!
 
 ## Особенности
 
@@ -69,12 +94,18 @@ npm run preview
 - ✅ Валидация формы
 - ✅ Hover-эффекты и анимации
 - ✅ Accessibility (a11y)
+- ✅ **Telegram Bot интеграция** - заявки приходят в Telegram с эмодзи
+- ✅ **Засечные шрифты** - Playfair Display + Lora
+- ✅ **Теплая цветовая гамма** - спокойные доверительные тона
 
 ## Цветовая схема
 
-- Primary: `#6366F1` (Indigo)
-- Secondary: `#8B5CF6` (Purple)
-- Accent: `#10B981` (Green)
+**Обновленная теплая палитра:**
+- Primary: `#C97A63` (Терракотовый)
+- Secondary: `#D9BFA0` (Бежевый)
+- Accent: `#F4A896` (Персиковый)
+
+Дизайн использует теплые, спокойные тона для создания доверительной атмосферы.
 
 ## Лицензия
 
