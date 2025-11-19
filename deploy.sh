@@ -58,7 +58,6 @@ rsync -avz --progress \
     --exclude 'node_modules' \
     --exclude '.git' \
     --exclude 'dist' \
-    --exclude '.env' \
     ./ ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH}/ || {
     echo -e "${RED}Failed to sync files to server${NC}"
     exit 1
