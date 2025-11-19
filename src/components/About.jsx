@@ -1,8 +1,35 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { UserCircle, ArrowRight } from 'phosphor-react';
 import { motion } from 'framer-motion';
 
 export default function About({ onOpenModal }) {
+    const videoRef = useRef(null);
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        // Check if desktop (width >= 768px)
+        const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+
+        if (isDesktop) {
+            // Desktop: play once and stop on last frame
+            video.loop = false;
+        } else {
+            // Mobile: loop continuously
+            video.loop = true;
+        }
+
+        // Handle window resize
+        const handleResize = () => {
+            const isDesktopNow = window.matchMedia('(min-width: 768px)').matches;
+            video.loop = !isDesktopNow;
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <section id="about" className="py-24 bg-white">
             <div className="container mx-auto px-4">
@@ -54,9 +81,9 @@ export default function About({ onOpenModal }) {
                         <div className="relative">
                             <div className="aspect-[4/5] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl overflow-hidden shadow-2xl border border-white/50">
                                 <video
+                                    ref={videoRef}
                                     src="/images/popova-video.mp4"
                                     autoPlay
-                                    loop
                                     muted
                                     playsInline
                                     className="w-full h-full object-cover"
