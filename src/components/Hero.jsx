@@ -1,5 +1,5 @@
 import React from 'react';
-import { PaperPlaneTilt, ChatCircle, InstagramLogo, UserCircle } from 'phosphor-react';
+import { PaperPlaneTilt, ChatCircle, Envelope, UserCircle } from 'phosphor-react';
 import { motion } from 'framer-motion';
 
 export default function Hero() {
@@ -83,7 +83,7 @@ export default function Hero() {
                                 {[
                                     { icon: PaperPlaneTilt, href: "https://t.me/username", label: "Telegram" },
                                     { icon: ChatCircle, href: "https://wa.me/79XXXXXXXXX", label: "WhatsApp" },
-                                    { icon: InstagramLogo, href: "https://instagram.com/username", label: "Instagram" },
+                                    { icon: Envelope, href: "mailto:radio.popova@gmail.com", label: "Email" },
                                 ].map((social, index) => (
                                     <a
                                         key={index}
@@ -128,7 +128,7 @@ export default function Hero() {
                                     transition={{ delay: 0.8, type: "spring" }}
                                     className="absolute bottom-8 right-0 bg-white text-primary-dark px-5 py-2 rounded-full shadow-xl border-2 border-primary/20 text-sm font-bold flex items-center gap-2"
                                 >
-                                    <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+                                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-lg shadow-green-500/50"></span>
                                     Онлайн
                                 </motion.div>
                             </div>

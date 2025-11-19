@@ -1,5 +1,5 @@
 import React from 'react';
-import { PaperPlaneTilt, ChatCircle, InstagramLogo } from 'phosphor-react';
+import { PaperPlaneTilt, ChatCircle, Envelope } from 'phosphor-react';
 
 export default function Footer({ onOpenPrivacyPolicy }) {
     const currentYear = new Date().getFullYear();
@@ -18,7 +18,7 @@ export default function Footer({ onOpenPrivacyPolicy }) {
                         {[
                             { icon: PaperPlaneTilt, href: "https://t.me/MissisPoppins", label: "Telegram" },
                             { icon: ChatCircle, href: "https://wa.me/79688274447", label: "WhatsApp" },
-                            { icon: InstagramLogo, href: "https://instagram.com/username", label: "Instagram" },
+                            { icon: Envelope, href: "mailto:radio.popova@gmail.com", label: "Email" },
                         ].map((social, index) => (
                             <a
                                 key={index}

@@ -42,8 +42,8 @@ export default function Header() {
                     {/* Logo */}
                     <div
                         className={cn(
-                            "text-2xl font-bold transition-colors duration-300",
-                            isScrolled ? "text-primary-dark" : "text-white"
+                            "text-2xl font-bold transition-all duration-300",
+                            isScrolled ? "text-primary-dark opacity-100" : "text-white opacity-0"
                         )}
                     >
                         Юлия Попова
