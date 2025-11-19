@@ -52,15 +52,16 @@ export default function About({ onOpenModal }) {
                         className="order-first md:order-last"
                     >
                         <div className="relative">
-                            <div className="aspect-[4/5] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl flex items-center justify-center overflow-hidden shadow-2xl border border-white/50">
-                                <div className="text-center p-8">
-                                    <UserCircle size={120} className="mx-auto text-primary/30 mb-4" weight="light" />
-                                    <p className="text-gray-400 font-medium">
-                                        Фото Юлии Поповой
-                                        <br />
-                                        <span className="text-sm opacity-70">(400x500px)</span>
-                                    </p>
-                                </div>
+                            <div className="aspect-[4/5] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl overflow-hidden shadow-2xl border border-white/50">
+                                <video
+                                    src="/images/popova-video.mp4"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    className="w-full h-full object-cover"
+                                    aria-label="Видео Юлии Поповой"
+                                />
                             </div>
                             {/* Decorative elements */}
                             <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-secondary/10 rounded-full -z-10 blur-2xl"></div>
