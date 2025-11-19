@@ -21,20 +21,29 @@ export default function PhoneSpoiler({ phone, className = '' }) {
         const width = canvas.width;
         const height = canvas.height;
 
-        // Animate noise/static effect
-        const drawNoise = () => {
-            const imageData = ctx.createImageData(width, height);
-            const data = imageData.data;
+        let frameCount = 0;
 
-            for (let i = 0; i < data.length; i += 4) {
-                const value = Math.random() * 255;
-                data[i] = value;     // Red
-                data[i + 1] = value; // Green
-                data[i + 2] = value; // Blue
-                data[i + 3] = 180;   // Alpha (semi-transparent)
+        // Animate noise/static effect (3x slower)
+        const drawNoise = () => {
+            frameCount++;
+
+            // Only update every 3rd frame to slow down animation
+            if (frameCount % 3 === 0) {
+                const imageData = ctx.createImageData(width, height);
+                const data = imageData.data;
+
+                for (let i = 0; i < data.length; i += 4) {
+                    // Random alpha value for white pixels (creates white/transparent effect)
+                    const alpha = Math.random() * 255;
+                    data[i] = 255;       // Red (white)
+                    data[i + 1] = 255;   // Green (white)
+                    data[i + 2] = 255;   // Blue (white)
+                    data[i + 3] = alpha; // Random transparency
+                }
+
+                ctx.putImageData(imageData, 0, 0);
             }
 
-            ctx.putImageData(imageData, 0, 0);
             animationRef.current = requestAnimationFrame(drawNoise);
         };
 
