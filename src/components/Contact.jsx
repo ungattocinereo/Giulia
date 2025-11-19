@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { PaperPlaneTilt, ChatCircle, Envelope, Phone } from 'phosphor-react';
 import { motion } from 'framer-motion';
 import { sendToTelegram } from '../utils/telegram';
+import { validateEmail, validatePhone, validateTelegram, formatTelegram } from '../utils/validation';
+import PhoneSpoiler from './PhoneSpoiler';
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -12,13 +14,43 @@ export default function Contact() {
         consent: false,
     });
     const [formStatus, setFormStatus] = useState(null);
+    const [validationErrors, setValidationErrors] = useState({});
 
     const handleFormChange = (e) => {
         const { name, value, type, checked } = e.target;
+        const newValue = type === 'checkbox' ? checked : value;
+
         setFormData(prev => ({
             ...prev,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: newValue
         }));
+
+        // Clear validation error when user starts typing
+        if (name === 'contact' && validationErrors.contact) {
+            setValidationErrors(prev => ({ ...prev, contact: null }));
+        }
+
+        // Validate contact field based on method
+        if (name === 'contact' && value.trim()) {
+            let isValid = false;
+            let errorMessage = '';
+
+            if (formData.method === 'telegram') {
+                const formattedValue = formatTelegram(value);
+                isValid = validateTelegram(formattedValue);
+                errorMessage = 'Telegram username должен начинаться с @ и содержать 5-32 символа';
+            } else if (formData.method === 'phone' || formData.method === 'whatsapp') {
+                isValid = validatePhone(value);
+                errorMessage = 'Введите корректный номер телефона (например, +79XXXXXXXXX)';
+            } else if (formData.method === 'email') {
+                isValid = validateEmail(value);
+                errorMessage = 'Введите корректный email адрес';
+            }
+
+            if (!isValid && value.length > 3) {
+                setValidationErrors(prev => ({ ...prev, contact: errorMessage }));
+            }
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -26,6 +58,27 @@ export default function Contact() {
 
         if (!formData.consent) {
             alert('Пожалуйста, дайте согласие на обработку персональных данных');
+            return;
+        }
+
+        // Validate contact field before submission
+        let isValid = false;
+        let errorMessage = '';
+
+        if (formData.method === 'telegram') {
+            const formattedValue = formatTelegram(formData.contact);
+            isValid = validateTelegram(formattedValue);
+            errorMessage = 'Telegram username должен начинаться с @ и содержать 5-32 символа';
+        } else if (formData.method === 'phone' || formData.method === 'whatsapp') {
+            isValid = validatePhone(formData.contact);
+            errorMessage = 'Введите корректный номер телефона (например, +79XXXXXXXXX)';
+        } else if (formData.method === 'email') {
+            isValid = validateEmail(formData.contact);
+            errorMessage = 'Введите корректный email адрес';
+        }
+
+        if (!isValid) {
+            setValidationErrors({ contact: errorMessage });
             return;
         }
 
@@ -68,28 +121,38 @@ export default function Contact() {
                             </p>
 
                             <div className="space-y-6">
-                                <a href="mailto:email@example.com" className="flex items-center gap-4 hover:text-secondary-light transition-colors">
+                                <a href="mailto:radio.popova@gmail.com" className="flex items-center gap-4 hover:text-secondary-light transition-colors">
                                     <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
                                         <Envelope size={20} />
                                     </div>
-                                    <span>email@example.com</span>
+                                    <span>radio.popova@gmail.com</span>
                                 </a>
-                                <a href="tel:+79000000000" className="flex items-center gap-4 hover:text-secondary-light transition-colors">
-                                    <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
-                                        <Phone size={20} />
-                                    </div>
-                                    <span>+7 (900) 000-00-00</span>
-                                </a>
+                                <PhoneSpoiler
+                                    phone="+79688274447"
+                                    className="hover:text-secondary-light transition-colors"
+                                />
                             </div>
                         </div>
 
                         <div className="mt-12 relative z-10">
                             <p className="text-sm text-white/60 mb-4">Мессенджеры:</p>
                             <div className="flex gap-4">
-                                <a href="#" className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all">
+                                <a
+                                    href="https://t.me/MissisPoppins"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all"
+                                    title="Telegram: @MissisPoppins"
+                                >
                                     <PaperPlaneTilt size={20} weight="fill" />
                                 </a>
-                                <a href="#" className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all">
+                                <a
+                                    href="https://wa.me/79688274447"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all"
+                                    title="WhatsApp: +79688274447"
+                                >
                                     <ChatCircle size={20} weight="fill" />
                                 </a>
                             </div>
@@ -121,9 +184,13 @@ export default function Contact() {
                                         value={formData.contact}
                                         onChange={handleFormChange}
                                         required
-                                        className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-0 transition-all"
+                                        className={`w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-0 transition-all ${validationErrors.contact ? 'border-red-500 border-2' : ''
+                                            }`}
                                         placeholder="@username или телефон"
                                     />
+                                    {validationErrors.contact && (
+                                        <p className="text-red-500 text-xs mt-1">{validationErrors.contact}</p>
+                                    )}
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">Удобный способ</label>
