@@ -1,13 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Phone } from 'phosphor-react';
 
 /**
  * PhoneSpoiler Component
- * Displays phone number as hidden/blurred text (like Telegram spoilers)
+ * Displays phone number with animated noise/static effect (like privacy screen)
  * Reveals the actual number when clicked to prevent scraping
  */
 export default function PhoneSpoiler({ phone, className = '' }) {
     const [isRevealed, setIsRevealed] = useState(false);
+    const canvasRef = useRef(null);
+    const animationRef = useRef(null);
+
+    useEffect(() => {
+        if (isRevealed || !canvasRef.current) return;
+
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Animate noise/static effect
+        const drawNoise = () => {
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                const value = Math.random() * 255;
+                data[i] = value;     // Red
+                data[i + 1] = value; // Green
+                data[i + 2] = value; // Blue
+                data[i + 3] = 180;   // Alpha (semi-transparent)
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+            animationRef.current = requestAnimationFrame(drawNoise);
+        };
+
+        drawNoise();
+
+        return () => {
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+            }
+        };
+    }, [isRevealed]);
 
     const handleReveal = () => {
         setIsRevealed(true);
@@ -33,23 +71,19 @@ export default function PhoneSpoiler({ phone, className = '' }) {
                     aria-label="Нажмите, чтобы показать номер телефона"
                 >
                     <span className="relative inline-block">
-                        {/* Blurred background effect */}
-                        <span
-                            className="absolute inset-0 bg-white/30 backdrop-blur-md rounded"
-                            aria-hidden="true"
-                        />
-
-                        {/* Hidden text for screen readers and structure */}
+                        {/* Hidden text for structure and screen readers */}
                         <span className="opacity-0 select-none pointer-events-none">
-                            +7 (XXX) XXX-XX-XX
+                            +7 (968) 827-44-47
                         </span>
 
-                        {/* Visible spoiler overlay */}
-                        <span className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-white/60 text-sm group-hover:text-white/80 transition-colors">
-                                Нажмите, чтобы показать
-                            </span>
-                        </span>
+                        {/* Animated noise overlay */}
+                        <canvas
+                            ref={canvasRef}
+                            width={160}
+                            height={24}
+                            className="absolute inset-0 rounded group-hover:opacity-90 transition-opacity"
+                            style={{ imageRendering: 'pixelated' }}
+                        />
                     </span>
                 </button>
             )}
