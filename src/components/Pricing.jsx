@@ -59,7 +59,7 @@ export default function Pricing({ onOpenModal }) {
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
 
                         <div className="mb-6 relative z-10">
-                            <div className="text-4xl font-bold mb-2">3 500 ₽</div>
+                            <div className="text-4xl font-bold mb-2">4 000 ₽</div>
                             <h3 className="text-xl font-medium text-white/90 mb-2">
                                 Индивидуальная сессия
                             </h3>
@@ -82,7 +82,7 @@ export default function Pricing({ onOpenModal }) {
                         className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all"
                     >
                         <div className="mb-6">
-                            <div className="text-4xl font-bold text-secondary mb-2">4 500 ₽</div>
+                            <div className="text-4xl font-bold text-secondary mb-2">5 000 ₽</div>
                             <h3 className="text-xl font-bold text-neutral-900 mb-2">
                                 Парная/семейная сессия
                             </h3>
@@ -99,6 +99,70 @@ export default function Pricing({ onOpenModal }) {
                         </button>
                     </motion.div>
                 </div>
+
+                {/* Career Guidance Package - Full Width */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="max-w-6xl mx-auto mb-16"
+                >
+                    <div className="bg-gradient-to-br from-primary to-primary-dark text-white rounded-3xl p-10 md:p-12 shadow-2xl shadow-primary/30 relative overflow-hidden">
+                        {/* Decorative elements */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/20 rounded-full -ml-32 -mb-32 blur-3xl"></div>
+
+                        <div className="relative z-10">
+                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 mb-8">
+                                <div>
+                                    <div className="inline-block bg-white/20 text-white px-4 py-1 rounded-full text-xs font-bold mb-4 tracking-wide uppercase">
+                                        Комплексная программа
+                                    </div>
+                                    <div className="text-5xl md:text-6xl font-bold mb-3">15 000 ₽</div>
+                                    <h3 className="text-2xl md:text-3xl font-bold mb-2">
+                                        Профориентация «от А до Я»
+                                    </h3>
+                                    <div className="text-white/80 text-lg">120–180 минут</div>
+                                </div>
+                            </div>
+
+                            <p className="text-white/90 text-lg leading-relaxed mb-8 max-w-4xl">
+                                Комплексная работа над вашим профессиональным путём: анализ интересов, сильных сторон и личных ценностей.
+                                Определяем подходящие сферы и варианты карьерного развития. Разбираем реальные шаги и составляем понятный план действий.
+                                Подходит подросткам, студентам и взрослым, которые хотят сменить профессию или найти своё дело.
+                            </p>
+
+                            <div className="grid md:grid-cols-3 gap-4 mb-8">
+                                <div className="flex items-start gap-3">
+                                    <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <Check size={16} weight="bold" />
+                                    </div>
+                                    <span className="text-white/90">Глубокий анализ интересов и способностей</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <Check size={16} weight="bold" />
+                                    </div>
+                                    <span className="text-white/90">Подбор подходящих профессий и сфер</span>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                        <Check size={16} weight="bold" />
+                                    </div>
+                                    <span className="text-white/90">Конкретный план действий</span>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={() => scrollToSection('contacts')}
+                                className="bg-white text-primary-dark px-8 py-4 rounded-xl hover:bg-neutral-50 transition-all font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1"
+                            >
+                                Записаться на профориентацию
+                            </button>
+                        </div>
+                    </div>
+                </motion.div>
 
                 {/* Payment Info */}
                 <div className="max-w-3xl mx-auto bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
