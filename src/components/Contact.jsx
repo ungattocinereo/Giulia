@@ -5,7 +5,7 @@ import { sendToTelegram } from '../utils/telegram';
 import { validateEmail, validatePhone, validateTelegram, formatTelegram } from '../utils/validation';
 import PhoneSpoiler from './PhoneSpoiler';
 
-export default function Contact() {
+export default function Contact({ onOpenPrivacyPolicy }) {
     const [formData, setFormData] = useState({
         name: '',
         contact: '',
@@ -230,7 +230,13 @@ export default function Contact() {
                                 />
                                 <label htmlFor="consent" className="text-sm text-gray-500">
                                     Я даю согласие на обработку персональных данных в соответствии с{' '}
-                                    <a href="#" className="text-primary hover:underline">политикой конфиденциальности</a>
+                                    <button
+                                        type="button"
+                                        onClick={onOpenPrivacyPolicy}
+                                        className="text-primary hover:underline"
+                                    >
+                                        политикой конфиденциальности
+                                    </button>
                                 </label>
                             </div>
 

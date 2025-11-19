@@ -7,9 +7,11 @@ import Pricing from './components/Pricing';
 import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import PrivacyPolicy from './components/PrivacyPolicy';
 
 export default function App() {
   const [activeModal, setActiveModal] = useState(null);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   return (
     <div className="min-h-screen bg-white font-sans text-neutral-800 selection:bg-primary/20 selection:text-primary-dark">
@@ -21,10 +23,10 @@ export default function App() {
         <Services />
         <Pricing onOpenModal={setActiveModal} />
         <FAQ />
-        <Contact />
+        <Contact onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)} />
       </main>
 
-      <Footer />
+      <Footer onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)} />
 
       {/* Modals would go here - keeping it simple for now as per plan */}
       {activeModal && (
@@ -47,6 +49,11 @@ export default function App() {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Privacy Policy Modal */}
+      {showPrivacyPolicy && (
+        <PrivacyPolicy onClose={() => setShowPrivacyPolicy(false)} />
       )}
     </div>
   );

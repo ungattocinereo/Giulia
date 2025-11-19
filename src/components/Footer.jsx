@@ -1,7 +1,7 @@
 import React from 'react';
 import { PaperPlaneTilt, ChatCircle, InstagramLogo } from 'phosphor-react';
 
-export default function Footer() {
+export default function Footer({ onOpenPrivacyPolicy }) {
     const currentYear = new Date().getFullYear();
 
     return (
@@ -16,8 +16,8 @@ export default function Footer() {
 
                     <div className="flex gap-4">
                         {[
-                            { icon: PaperPlaneTilt, href: "https://t.me/username", label: "Telegram" },
-                            { icon: ChatCircle, href: "https://wa.me/79XXXXXXXXX", label: "WhatsApp" },
+                            { icon: PaperPlaneTilt, href: "https://t.me/MissisPoppins", label: "Telegram" },
+                            { icon: ChatCircle, href: "https://wa.me/79688274447", label: "WhatsApp" },
                             { icon: InstagramLogo, href: "https://instagram.com/username", label: "Instagram" },
                         ].map((social, index) => (
                             <a
@@ -35,7 +35,12 @@ export default function Footer() {
 
                     <div className="text-center md:text-right text-white/40 text-sm">
                         <p>&copy; {currentYear} Все права защищены</p>
-                        <p className="mt-1">Политика конфиденциальности</p>
+                        <button
+                            onClick={onOpenPrivacyPolicy}
+                            className="mt-1 hover:text-white/60 transition-colors"
+                        >
+                            Политика конфиденциальности
+                        </button>
                     </div>
 
                 </div>
