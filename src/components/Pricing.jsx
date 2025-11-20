@@ -26,28 +26,32 @@ export default function Pricing({ onOpenModal }) {
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
-                    {/* Free Intro */}
+                    {/* Free Intro - Highlighted */}
                     <motion.div
                         whileHover={{ y: -5 }}
-                        className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all"
+                        className="bg-white rounded-2xl p-8 shadow-xl ring-4 ring-green-100 border-green-200 relative overflow-hidden"
                     >
+                        <div className="absolute top-0 right-0 bg-green-500 text-white text-xs font-bold px-4 py-1 rounded-bl-xl z-10">
+                            РЕКОМЕНДУЮ
+                        </div>
+
                         <div className="mb-6">
                             <div className="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold mb-4">
                                 БЕСПЛАТНО
                             </div>
-                            <h3 className="text-xl font-bold text-neutral-900 mb-2">
+                            <h3 className="text-2xl font-bold text-neutral-900 mb-2">
                                 Встреча-знакомство
                             </h3>
-                            <div className="text-gray-500">30-40 минут</div>
+                            <div className="text-gray-500 font-medium">30-40 минут</div>
                         </div>
                         <p className="text-neutral-700 mb-8 leading-relaxed">
-                            Знакомимся, обсуждаем вашу ситуацию, определяем формат работы
+                            Знакомимся, обсуждаем вашу ситуацию, определяем формат работы. Никаких обязательств.
                         </p>
                         <button
                             onClick={() => scrollToSection('contacts')}
-                            className="w-full bg-neutral-100 text-neutral-900 py-3 rounded-xl hover:bg-neutral-200 transition-colors font-semibold"
+                            className="w-full bg-green-600 text-white py-4 rounded-xl hover:bg-green-700 transition-all font-bold shadow-lg hover:shadow-green-600/30"
                         >
-                            Записаться
+                            Записаться бесплатно
                         </button>
                     </motion.div>
 

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
-import Services from './components/Services';
+import MyApproach from './components/MyApproach';
+import ComprehensiveApproach from './components/ComprehensiveApproach';
 import Pricing from './components/Pricing';
 import FAQ from './components/FAQ';
 import Contact from './components/Contact';
@@ -20,8 +21,9 @@ export default function App() {
       <main>
         <Hero />
         <About onOpenModal={setActiveModal} />
-        <Services />
+        <MyApproach />
         <Pricing onOpenModal={setActiveModal} />
+        <ComprehensiveApproach />
         <FAQ />
         <Contact onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)} />
       </main>
