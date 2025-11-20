@@ -7,7 +7,7 @@ set -e  # Exit on error
 
 # Configuration
 SERVER_IP="185.250.36.158"
-SERVER_PATH="/var/www/popova.cinereo.it"
+SERVER_PATH="/var/www/popovatalk.ru"
 SERVER_USER="root"
 PROJECT_NAME="popova-website"
 
@@ -68,7 +68,7 @@ echo ""
 # Step 4: Build and start container on server
 echo -e "${YELLOW}Step 3: Building and starting container on server...${NC}"
 ssh ${SERVER_USER}@${SERVER_IP} << 'ENDSSH'
-cd /var/www/popova.cinereo.it
+cd /var/www/popovatalk.ru
 
 # Stop and remove existing container if running
 docker-compose down 2>/dev/null || true
