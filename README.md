@@ -10,7 +10,7 @@
 - ✅ Плавные анимации и переходы (Framer Motion)
 - ✅ Интеграция с Telegram Bot для заявок
 - ✅ Docker deployment ready
-- ✅ SEO оптимизация
+- ✅ SEO оптимизация (Open Graph, Twitter Cards, полные meta tags)
 - ✅ Высокая производительность (Vite)
 
 ## 🎨 Дизайн
@@ -119,38 +119,46 @@ VITE_TELEGRAM_CHAT_ID=your_chat_id_here
 ```
 Giulia/
 ├── src/
-│   ├── components/          # React компоненты
-│   │   ├── Header.jsx      # Навигация
-│   │   ├── Hero.jsx        # Главный экран
-│   │   ├── About.jsx       # О себе
-│   │   ├── Services.jsx    # Услуги
-│   │   ├── Pricing.jsx     # Стоимость
-│   │   ├── Contact.jsx     # Контакты
-│   │   ├── FAQ.jsx         # Вопросы-ответы
-│   │   └── Footer.jsx      # Подвал
-│   ├── utils/              # Утилиты
-│   ├── App.jsx             # Главный компонент
-│   ├── main.jsx            # Точка входа
-│   └── index.css           # Глобальные стили
+│   ├── components/                    # React компоненты
+│   │   ├── Header.jsx                # Навигация
+│   │   ├── Hero.jsx                  # Главный экран
+│   │   ├── About.jsx                 # О себе (биография)
+│   │   ├── MyApproach.jsx            # Мой подход (NEW)
+│   │   ├── Pricing.jsx               # Стоимость
+│   │   ├── ComprehensiveApproach.jsx # Комплексный подход - таблица услуг (NEW)
+│   │   ├── Contact.jsx               # Контакты
+│   │   ├── FAQ.jsx                   # Вопросы-ответы
+│   │   ├── Footer.jsx                # Подвал
+│   │   ├── PrivacyPolicy.jsx         # Политика конфиденциальности
+│   │   └── PhoneSpoiler.jsx          # Компонент для показа телефона
+│   ├── utils/                        # Утилиты
+│   │   └── cn.js                     # Утилита для классов
+│   ├── App.jsx                       # Главный компонент
+│   ├── main.jsx                      # Точка входа
+│   └── index.css                     # Глобальные стили
 ├── public/
-│   └── images/             # Изображения
-├── Dockerfile              # Docker конфигурация
-├── docker-compose.yml      # Docker Compose
-├── nginx.conf              # Nginx конфигурация
-├── deploy.sh               # Скрипт деплоя
-├── DEPLOYMENT.md           # Инструкция по деплою
+│   └── images/                       # Изображения
+│       ├── popova-001.png           # Аватар для SEO/социальных сетей
+│       ├── popova-video.mp4         # Видео в секции "О себе"
+│       └── background-pastel.jpg    # Фон hero секции
+├── Dockerfile                        # Docker конфигурация
+├── docker-compose.yml                # Docker Compose
+├── nginx.conf                        # Nginx конфигурация
+├── deploy.sh                         # Скрипт деплоя
+├── DEPLOYMENT.md                     # Инструкция по деплою
 └── package.json
 ```
 
 ## 🎯 Секции сайта
 
 1. **Hero** - Главный экран с фоновым изображением и аватаром
-2. **About** - Информация о специалисте
-3. **Services** - Три пакета услуг
-4. **Pricing** - Прозрачные цены
-5. **FAQ** - Часто задаваемые вопросы
-6. **Contact** - Форма обратной связи с Telegram интеграцией
-7. **Footer** - Контакты и социальные сети
+2. **About** - Краткая биография специалиста + призыв к бесплатной встрече
+3. **My Approach** - Описание комплексного подхода к работе
+4. **Pricing** - Прозрачные цены (выделена бесплатная встреча-знакомство)
+5. **Comprehensive Approach** - Сравнительная таблица всех услуг
+6. **FAQ** - Часто задаваемые вопросы
+7. **Contact** - Форма обратной связи с Telegram интеграцией
+8. **Footer** - Контакты и социальные сети
 
 ## 🔧 Конфигурация
 
@@ -187,6 +195,33 @@ VITE_TELEGRAM_CHAT_ID=      # ID чата для уведомлений
 ### Цены
 
 Обновите в `src/components/Pricing.jsx`
+
+## 🔍 SEO Оптимизация
+
+Сайт полностью оптимизирован для поисковых систем и социальных сетей:
+
+### Meta Tags
+
+В `index.html` настроены:
+- **Primary Meta Tags** - title, description, keywords, author, robots
+- **Open Graph Tags** - для Facebook, LinkedIn, VK
+- **Twitter Card Tags** - для Twitter/X
+- **Canonical URL** - для избежания дублирования контента
+- **Theme Color** - цвет бренда для мобильных браузеров
+
+### Social Media Preview
+
+При шаринге в социальных сетях отображается:
+- **Изображение**: `popova-001.png` (1200x630px)
+- **Заголовок**: "Юлия Попова — Психолог, Тьютор, Профориентолог"
+- **Описание**: Краткое описание услуг с упоминанием бесплатной встречи
+
+### Структурированные данные
+
+- Правильная иерархия заголовков (H1-H3)
+- Семантическая разметка HTML5
+- Оптимизированные alt-теги для изображений
+- Русская локализация (`lang="ru"`, `og:locale="ru_RU"`)
 
 ## 🚢 Deployment
 
