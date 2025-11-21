@@ -2,7 +2,7 @@
 
 Современный одностраничный лендинг для психолога, тьютора и профориентолога Юлии Поповой.
 
-🌐 **Сайт:** [popova.cinereo.it](https://popova.cinereo.it)
+🌐 **Сайт:** [popovatalk.ru](https://popovatalk.ru)
 
 ## ✨ Особенности
 
