@@ -1,16 +1,6 @@
-/**
- * Отправка сообщения в Telegram через Bot API
- */
+const RECAPTCHA_SITE_KEY = '6LcMs18sAAAAAOhd3sYSLVgPxEhmUFVJOw59lJrh';
+
 export async function sendToTelegram(formData) {
-  const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-  const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
-
-  if (!botToken || !chatId) {
-    console.error('Telegram configuration is missing');
-    throw new Error('Telegram не настроен. Проверьте файл .env');
-  }
-
-  // Определяем эмодзи для способа связи
   const methodEmoji = {
     telegram: '📱',
     whatsapp: '💚',
@@ -18,9 +8,8 @@ export async function sendToTelegram(formData) {
     phone: '☎️',
   };
 
-  // Форматируем красивое сообщение с эмодзи
   const message = `
-🎯 <b>Новая заявка с сайта!</b>
+🎯 <b>Новая заявка с сайта popovatalk.ru!</b>
 
 👤 <b>Имя:</b> ${formData.name}
 ${methodEmoji[formData.method] || '📞'} <b>Контакт:</b> ${formData.contact}
@@ -36,38 +25,45 @@ ${formData.message ? `\n📝 <b>Сообщение:</b>\n${formData.message}` : 
   })}
 `.trim();
 
-  const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
   try {
-    const response = await fetch(url, {
+    const recaptchaToken = await new Promise((resolve, reject) => {
+      if (!window.grecaptcha) {
+        reject(new Error('reCAPTCHA не загружен. Обновите страницу.'));
+        return;
+      }
+
+      grecaptcha.ready(() => {
+        grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit_form' })
+          .then(resolve)
+          .catch(err => reject(new Error('Ошибка проверки reCAPTCHA: ' + err)));
+      });
+    });
+
+    const response = await fetch('/hooks/send-telegram', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        chat_id: chatId,
-        text: message,
-        parse_mode: 'HTML',
+        message: message,
+        recaptchaToken: recaptchaToken
       }),
     });
 
     const data = await response.json();
 
-    if (!response.ok || !data.ok) {
-      console.error('Telegram API error:', data);
-      throw new Error(data.description || 'Ошибка при отправке в Telegram');
+    if (!response.ok) {
+      console.error('Webhook error:', data);
+      throw new Error(data.error || 'Ошибка при отправке заявки');
     }
 
     return data;
   } catch (error) {
-    console.error('Failed to send message to Telegram:', error);
+    console.error('Failed to send message:', error);
     throw error;
   }
 }
 
-/**
- * Получить человекочитаемое название способа связи
- */
 function getMethodName(method) {
   const names = {
     telegram: 'Telegram',

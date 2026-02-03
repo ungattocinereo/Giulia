@@ -42,7 +42,7 @@ export default function Pricing({ onOpenModal }) {
                             <h3 className="text-2xl font-bold text-neutral-900 mb-2">
                                 Встреча-знакомство
                             </h3>
-                            <div className="text-gray-500 font-medium">30-40 минут</div>
+                            <div className="text-gray-500 font-medium">20 минут</div>
                         </div>
                         <p className="text-neutral-700 mb-8 leading-relaxed">
                             Знакомимся, обсуждаем вашу ситуацию, определяем формат работы. Никаких обязательств.
