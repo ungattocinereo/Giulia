@@ -1,19 +1,12 @@
 #!/bin/bash
+# Deploy script for popovatalk.ru
+# Triggered by github webhook: /hooks/redeploy-popovatalk-ru
+# Uses shared library at /usr/local/lib/deploy-lib.sh
+source /usr/local/lib/deploy-lib.sh
 
-exec > /tmp/deploy.log 2>&1
-echo "Deploy started at $(date)"
-
-cd /home/greg/Giulia || exit
-
-echo "Pulling changes..."
-git config --global --add safe.directory /home/greg/Giulia
-git fetch origin main
-git reset --hard origin/main
-
-echo "Installing dependencies..."
-/usr/bin/npm install
-
-echo "Building project..."
-/usr/bin/npm run build
-
-echo "Deploy finished at $(date)"
+deploy::init /home/greg/Giulia
+deploy::fetch popovatalk_ru_alpha
+deploy::npm_ci
+deploy::build_atomic 'npx vite build --outDir' dist
+deploy::healthcheck https://popovatalk.ru/
+deploy::cleanup_old dist 3

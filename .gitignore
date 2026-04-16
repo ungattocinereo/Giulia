@@ -25,3 +25,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# deploy automation (deploy-lib.sh)
+.deploy-logs/
+.deploy.lock
+redeploy.sh.bak.*
+dist.prev.*
+dist.new.*
