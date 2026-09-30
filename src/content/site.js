@@ -15,8 +15,8 @@ export const site = {
     twitterImage: '/images/social/popovatalk-twitter.png',
 };
 
-const individual = { title: 'Индивидуальная сессия', price: '4 000 ₽', priceValue: 4000 };
-const family = { title: 'Парная/семейная сессия', price: '5 000 ₽', priceValue: 5000 };
+const individual = { title: 'Индивидуальная сессия', price: '5 000 ₽', priceValue: 5000 };
+const family = { title: 'Парная/семейная сессия', price: '6 000 ₽', priceValue: 6000 };
 
 export const sessions = [
     { title: 'Встреча-знакомство', price: 'Бесплатно', priceValue: 0, duration: '20 минут', text: 'Знакомимся, обсуждаем вашу ситуацию, определяем формат работы. Никаких обязательств.', icon: 'message', button: 'Записаться бесплатно' },
