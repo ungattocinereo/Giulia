@@ -64,5 +64,27 @@ export function formatPhone(phone) {
  * @returns {string} - Username with @ prefix
  */
 export function formatTelegram(username) {
+    username = username.trim();
     return username.startsWith('@') ? username : '@' + username;
+}
+
+export const CONTACT_LIMITS = { name: 100, contact: 100, message: 3000 };
+
+export function getContactError(method, contact) {
+    contact = contact.trim();
+    if (!contact || contact.length > CONTACT_LIMITS.contact) {
+        return 'Укажите контакт для связи (до 100 символов)';
+    }
+    if (method === 'telegram') {
+        return validateTelegram(formatTelegram(contact)) ? '' :
+            'Укажите Telegram username: 5–32 символа, например @username';
+    }
+    if (method === 'phone' || method === 'whatsapp') {
+        return validatePhone(contact) ? '' :
+            'Введите корректный номер телефона (например, +79XXXXXXXXX)';
+    }
+    if (method === 'email') {
+        return validateEmail(contact) ? '' : 'Введите корректный email адрес';
+    }
+    return 'Выберите способ связи';
 }

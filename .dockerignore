@@ -2,6 +2,12 @@ node_modules
 .git
 .gitignore
 
+.env
+.env.*
+!.env.example
+*.local
+.playwright-cli
+output
 .env.local
 .env.*.local
 dist

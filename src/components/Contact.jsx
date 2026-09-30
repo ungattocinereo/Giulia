@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { PaperPlaneTilt, ChatCircle, Envelope, Phone } from 'phosphor-react';
-import { motion } from 'framer-motion';
+import { PaperPlaneTilt, ChatCircle, Envelope } from 'phosphor-react';
 import { sendToTelegram } from '../utils/telegram';
-import { validateEmail, validatePhone, validateTelegram, formatTelegram } from '../utils/validation';
+import { CONTACT_LIMITS, getContactError } from '../utils/validation';
 import PhoneSpoiler from './PhoneSpoiler';
 
 export default function Contact({ onOpenPrivacyPolicy }) {
@@ -15,92 +14,43 @@ export default function Contact({ onOpenPrivacyPolicy }) {
     });
     const [formStatus, setFormStatus] = useState(null);
     const [validationErrors, setValidationErrors] = useState({});
+    const [formError, setFormError] = useState('');
 
     const handleFormChange = (e) => {
         const { name, value, type, checked } = e.target;
-        const newValue = type === 'checkbox' ? checked : value;
-
-        setFormData(prev => ({
+        const nextData = { ...formData, [name]: type === 'checkbox' ? checked : value };
+        setFormData(nextData);
+        setFormError('');
+        setValidationErrors(prev => ({
             ...prev,
-            [name]: newValue
+            [name]: null,
+            ...((name === 'contact' || name === 'method') ? {
+                contact: nextData.contact.trim() ? getContactError(nextData.method, nextData.contact) : null,
+            } : {}),
         }));
-
-        // Clear validation error when user starts typing
-        if (name === 'contact' && validationErrors.contact) {
-            setValidationErrors(prev => ({ ...prev, contact: null }));
-        }
-
-        // Validate contact field based on method
-        if (name === 'contact' && value.trim()) {
-            let isValid = false;
-            let errorMessage = '';
-
-            if (formData.method === 'telegram') {
-                const formattedValue = formatTelegram(value);
-                isValid = validateTelegram(formattedValue);
-                errorMessage = 'Telegram username должен начинаться с @ и содержать 5-32 символа';
-            } else if (formData.method === 'phone' || formData.method === 'whatsapp') {
-                isValid = validatePhone(value);
-                errorMessage = 'Введите корректный номер телефона (например, +79XXXXXXXXX)';
-            } else if (formData.method === 'email') {
-                isValid = validateEmail(value);
-                errorMessage = 'Введите корректный email адрес';
-            }
-
-            if (!isValid && value.length > 3) {
-                setValidationErrors(prev => ({ ...prev, contact: errorMessage }));
-            }
-        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (formStatus === 'loading' || formStatus === 'success') return;
+        const errors = {};
+        if (!formData.name.trim()) errors.name = 'Укажите ваше имя';
+        const contactError = getContactError(formData.method, formData.contact);
+        if (contactError) errors.contact = contactError;
+        if (!formData.consent) errors.consent = 'Дайте согласие на обработку персональных данных';
+        setValidationErrors(errors);
+        if (Object.keys(errors).length) return;
 
-        if (!formData.consent) {
-            alert('Пожалуйста, дайте согласие на обработку персональных данных');
-            return;
-        }
-
-        // Validate contact field before submission
-        let isValid = false;
-        let errorMessage = '';
-
-        if (formData.method === 'telegram') {
-            const formattedValue = formatTelegram(formData.contact);
-            isValid = validateTelegram(formattedValue);
-            errorMessage = 'Telegram username должен начинаться с @ и содержать 5-32 символа';
-        } else if (formData.method === 'phone' || formData.method === 'whatsapp') {
-            isValid = validatePhone(formData.contact);
-            errorMessage = 'Введите корректный номер телефона (например, +79XXXXXXXXX)';
-        } else if (formData.method === 'email') {
-            isValid = validateEmail(formData.contact);
-            errorMessage = 'Введите корректный email адрес';
-        }
-
-        if (!isValid) {
-            setValidationErrors({ contact: errorMessage });
-            return;
-        }
-
+        setFormError('');
         setFormStatus('loading');
-
         try {
             await sendToTelegram(formData);
+            setFormData({ name: '', contact: '', method: 'telegram', message: '', consent: false });
             setFormStatus('success');
-            setTimeout(() => {
-                setFormStatus(null);
-                setFormData({
-                    name: '',
-                    contact: '',
-                    method: 'telegram',
-                    message: '',
-                    consent: false,
-                });
-            }, 3000);
+            setTimeout(() => setFormStatus(null), 3000);
         } catch (error) {
-            console.error('Error sending form:', error);
+            setFormError(error.message || 'Не удалось отправить заявку. Попробуйте позже.');
             setFormStatus('error');
-            setTimeout(() => setFormStatus(null), 5000);
         }
     };
 
@@ -161,100 +111,115 @@ export default function Contact({ onOpenPrivacyPolicy }) {
 
                     {/* Form Side */}
                     <div className="p-10 md:p-12 md:w-3/5">
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Ваше имя</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleFormChange}
-                                    required
-                                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-0 transition-all"
-                                    placeholder="Как к вам обращаться?"
-                                />
-                            </div>
-
-                            <div className="grid md:grid-cols-2 gap-6">
+                        <form onSubmit={handleSubmit}>
+                            <fieldset disabled={formStatus === 'loading' || formStatus === 'success'} className="space-y-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Контакт для связи</label>
+                                    <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-2">Ваше имя</label>
                                     <input
                                         type="text"
-                                        name="contact"
-                                        value={formData.contact}
+                                        name="name"
+                                        id="contact-name"
+                                        maxLength={CONTACT_LIMITS.name}
+                                        autoComplete="name"
+                                        value={formData.name}
                                         onChange={handleFormChange}
                                         required
-                                        className={`w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-0 transition-all ${validationErrors.contact ? 'border-red-500 border-2' : ''
-                                            }`}
-                                        placeholder="@username или телефон"
-                                    />
-                                    {validationErrors.contact && (
-                                        <p className="text-red-500 text-xs mt-1">{validationErrors.contact}</p>
-                                    )}
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Удобный способ</label>
-                                    <select
-                                        name="method"
-                                        value={formData.method}
-                                        onChange={handleFormChange}
                                         className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-0 transition-all"
-                                    >
-                                        <option value="telegram">Telegram</option>
-                                        <option value="whatsapp">WhatsApp</option>
-                                        <option value="phone">Звонок</option>
-                                    </select>
+                                        placeholder="Как к вам обращаться?"
+                                    />
+                                    {validationErrors.name && <p role="alert" className="text-red-500 text-xs mt-1">{validationErrors.name}</p>}
                                 </div>
-                            </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Сообщение (необязательно)</label>
-                                <textarea
-                                    name="message"
-                                    value={formData.message}
-                                    onChange={handleFormChange}
-                                    rows="3"
-                                    className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-0 transition-all resize-none"
-                                    placeholder="Кратко опишите ваш запрос..."
-                                ></textarea>
-                            </div>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label htmlFor="contact-value" className="block text-sm font-medium text-gray-700 mb-2">Контакт для связи</label>
+                                        <input
+                                            type="text"
+                                            name="contact"
+                                            id="contact-value"
+                                            maxLength={CONTACT_LIMITS.contact}
+                                            value={formData.contact}
+                                            onChange={handleFormChange}
+                                            required
+                                            className={`w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-0 transition-all ${validationErrors.contact ? 'border-red-500 border-2' : ''
+                                                }`}
+                                            placeholder="@username или телефон"
+                                        />
+                                        {validationErrors.contact && (
+                                            <p className="text-red-500 text-xs mt-1">{validationErrors.contact}</p>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label htmlFor="contact-method" className="block text-sm font-medium text-gray-700 mb-2">Удобный способ</label>
+                                        <select
+                                            name="method"
+                                            id="contact-method"
+                                            value={formData.method}
+                                            onChange={handleFormChange}
+                                            className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-0 transition-all"
+                                        >
+                                            <option value="telegram">Telegram</option>
+                                            <option value="whatsapp">WhatsApp</option>
+                                            <option value="phone">Звонок</option>
+                                            <option value="email">Email</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                            <div className="flex items-start gap-3">
-                                <input
-                                    type="checkbox"
-                                    name="consent"
-                                    checked={formData.consent}
-                                    onChange={handleFormChange}
-                                    id="consent"
-                                    className="mt-1 rounded text-primary focus:ring-primary"
-                                />
-                                <label htmlFor="consent" className="text-sm text-gray-500">
-                                    Я даю согласие на обработку персональных данных в соответствии с{' '}
-                                    <button
-                                        type="button"
-                                        onClick={onOpenPrivacyPolicy}
-                                        className="text-primary hover:underline"
-                                    >
-                                        политикой конфиденциальности
-                                    </button>
-                                </label>
-                            </div>
+                                <div>
+                                    <label htmlFor="contact-message" className="block text-sm font-medium text-gray-700 mb-2">Сообщение (необязательно)</label>
+                                    <textarea
+                                        name="message"
+                                        id="contact-message"
+                                        maxLength={CONTACT_LIMITS.message}
+                                        value={formData.message}
+                                        onChange={handleFormChange}
+                                        rows="3"
+                                        className="w-full px-4 py-3 rounded-xl bg-gray-50 border-transparent focus:bg-white focus:border-primary focus:ring-0 transition-all resize-none"
+                                        placeholder="Кратко опишите ваш запрос..."
+                                    ></textarea>
+                                </div>
 
-                            <button
-                                type="submit"
-                                disabled={formStatus === 'loading'}
-                                className="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-primary-dark transition-all shadow-lg hover:shadow-primary/30 disabled:opacity-70 disabled:cursor-not-allowed"
-                            >
-                                {formStatus === 'loading' ? 'Отправка...' :
-                                    formStatus === 'success' ? 'Отправлено!' :
-                                        'Отправить заявку'}
-                            </button>
+                                <div className="flex items-start gap-3">
+                                    <input
+                                        type="checkbox"
+                                        name="consent"
+                                        checked={formData.consent}
+                                        onChange={handleFormChange}
+                                        id="consent"
+                                        className="mt-1 rounded text-primary focus:ring-primary"
+                                    />
+                                    <label htmlFor="consent" className="text-sm text-gray-500">
+                                        Я даю согласие на обработку персональных данных в соответствии с{' '}
+                                        <button
+                                            type="button"
+                                            onClick={onOpenPrivacyPolicy}
+                                            className="text-primary hover:underline"
+                                        >
+                                            политикой конфиденциальности
+                                        </button>
+                                    </label>
+                                </div>
 
-                            {formStatus === 'error' && (
-                                <p className="text-red-500 text-center text-sm">
-                                    Произошла ошибка. Пожалуйста, попробуйте позже.
-                                </p>
-                            )}
+                                {validationErrors.consent && <p role="alert" className="text-red-500 text-sm">{validationErrors.consent}</p>}
+
+                                <button
+                                    type="submit"
+                                    disabled={formStatus === 'loading' || formStatus === 'success'}
+                                    className="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-primary-dark transition-all shadow-lg hover:shadow-primary/30 disabled:opacity-70 disabled:cursor-not-allowed"
+                                >
+                                    {formStatus === 'loading' ? 'Отправка...' :
+                                        formStatus === 'success' ? 'Отправлено!' :
+                                            'Отправить заявку'}
+                                </button>
+
+                                {formStatus === 'error' && (
+                                    <p role="alert" className="text-red-500 text-center text-sm">
+                                        {formError}
+                                    </p>
+                                )}
+                                {formStatus === 'success' && <p role="status" className="text-green-700 text-center text-sm">Заявка отправлена. Я свяжусь с вами в течение дня.</p>}
+                            </fieldset>
                         </form>
                     </div>
 

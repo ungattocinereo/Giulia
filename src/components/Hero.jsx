@@ -81,8 +81,8 @@ export default function Hero() {
                                 className="flex gap-4 justify-center md:justify-start"
                             >
                                 {[
-                                    { icon: PaperPlaneTilt, href: "https://t.me/username", label: "Telegram" },
-                                    { icon: ChatCircle, href: "https://wa.me/79XXXXXXXXX", label: "WhatsApp" },
+                                    { icon: PaperPlaneTilt, href: "https://t.me/MissisPoppins", label: "Telegram" },
+                                    { icon: ChatCircle, href: "https://wa.me/79688274447", label: "WhatsApp" },
                                     { icon: Envelope, href: "mailto:radio.popova@gmail.com", label: "Email" },
                                 ].map((social, index) => (
                                     <a

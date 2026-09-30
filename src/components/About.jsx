@@ -31,7 +31,7 @@ export default function About({ onOpenModal }) {
     }, []);
 
     return (
-        <section id="about" className="py-24 bg-white">
+        <section id="about" className="py-24 bg-white overflow-hidden">
             <div className="container mx-auto px-4">
                 <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center max-w-6xl mx-auto">
 

@@ -1,89 +1,69 @@
-#!/bin/bash
-# ВСЕ ошибки перенаправляем в stdout (чтобы webhook отправил их в браузер)
-exec 2>&1
+#!/usr/bin/env bash
+# Called by webhook with the complete JSON payload as its first argument.
+set -euo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="${POPOVATALK_ENV_FILE:-$SCRIPT_DIR/../.env}"
 
-# Абсолютный путь к .env (важно!)
-ENV_FILE="/home/greg/Giulia/.env"
-
-# Проверяем, что файл существует и читается
-if [ ! -f "$ENV_FILE" ]; then
-  echo '{"error":"ENV file not found at /home/greg/Giulia/.env"}'
+fail() {
+  printf '{"error":"%s"}\n' "$1"
   exit 1
+}
+
+for tool in jq curl awk; do
+  command -v "$tool" >/dev/null 2>&1 || fail 'Required server utility is missing'
+done
+[ -r "$ENV_FILE" ] || fail 'Server configuration is unavailable'
+
+# Read literal values without evaluating the .env as shell code.
+read_env() {
+  awk -v key="$1" '
+    { sub(/\r$/, "") }
+    $0 ~ "^[[:space:]]*" key "=" {
+      sub("^[[:space:]]*" key "=", "")
+      sub(/^[[:space:]]+/, ""); sub(/[[:space:]]+$/, "")
+      if (($0 ~ /^"/ && $0 ~ /"$/) || ($0 ~ /^\047/ && $0 ~ /\047$/)) {
+        $0 = substr($0, 2, length($0)-2)
+      }
+      print; exit
+    }
+  ' "$ENV_FILE"
+}
+TELEGRAM_BOT_TOKEN="$(read_env TELEGRAM_BOT_TOKEN)"
+TELEGRAM_CHAT_ID="$(read_env TELEGRAM_CHAT_ID)"
+RECAPTCHA_SECRET_KEY="$(read_env RECAPTCHA_SECRET_KEY)"
+[ -n "$TELEGRAM_BOT_TOKEN" ] && [ -n "$TELEGRAM_CHAT_ID" ] && [ -n "$RECAPTCHA_SECRET_KEY" ] || fail 'Server configuration is incomplete'
+
+PAYLOAD="${1:-}"
+# jq requires exactly one object, nonempty string fields, and a bounded message.
+if ! printf '%s' "$PAYLOAD" | jq -es '
+  length == 1 and (.[0] | type == "object" and
+  (.message | type == "string" and test("\\S") and length <= 32768) and
+  (.recaptchaToken | type == "string" and length > 0))
+' >/dev/null 2>&1; then
+  fail 'Invalid payload: message and recaptchaToken are required'
 fi
+MESSAGE="$(printf '%s' "$PAYLOAD" | jq -r '.message')"
+RECAPTCHA_TOKEN="$(printf '%s' "$PAYLOAD" | jq -r '.recaptchaToken')"
 
-# Загружаем переменные вручную (без xargs, который может падать)
-TELEGRAM_BOT_TOKEN=$(grep "^TELEGRAM_BOT_TOKEN=" "$ENV_FILE" | cut -d'=' -f2- | tr -d '"')
-TELEGRAM_CHAT_ID=$(grep "^TELEGRAM_CHAT_ID=" "$ENV_FILE" | cut -d'=' -f2- | tr -d '"')
-RECAPTCHA_SECRET_KEY=$(grep "^RECAPTCHA_SECRET_KEY=" "$ENV_FILE" | cut -d'=' -f2- | tr -d '"')
-
-# Проверяем, что переменные загрузились
-if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
-  echo '{"error":"TELEGRAM_BOT_TOKEN is empty or not found in .env"}'
-  exit 1
+if ! RECAPTCHA_RESULT="$(curl --silent --show-error --fail --connect-timeout 5 --max-time 15 \
+  -X POST 'https://www.google.com/recaptcha/api/siteverify' \
+  --data-urlencode "secret=$RECAPTCHA_SECRET_KEY" \
+  --data-urlencode "response=$RECAPTCHA_TOKEN" 2>/dev/null)"; then
+  fail 'reCAPTCHA verification is unavailable'
 fi
-
-if [ -z "$TELEGRAM_CHAT_ID" ]; then
-  echo '{"error":"TELEGRAM_CHAT_ID is empty or not found in .env"}'
-  exit 1
+if ! printf '%s' "$RECAPTCHA_RESULT" | jq -e '.success == true' >/dev/null 2>&1; then
+  fail 'reCAPTCHA verification failed'
 fi
-
-if [ -z "$RECAPTCHA_SECRET_KEY" ]; then
-  echo '{"error":"RECAPTCHA_SECRET_KEY is empty or not found in .env"}'
-  exit 1
+# Preserve the existing acceptance policy: score is returned but not used as a gate.
+SCORE="$(printf '%s' "$RECAPTCHA_RESULT" | jq -r '.score // 0')"
+TG_PAYLOAD="$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$MESSAGE" \
+  '{chat_id: $chat, text: $text, parse_mode: "HTML"}')"
+if ! TG_RESULT="$(curl --silent --show-error --fail --connect-timeout 5 --max-time 20 \
+  -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+  -H 'Content-Type: application/json' --data "$TG_PAYLOAD" 2>/dev/null)"; then
+  fail 'Telegram delivery could not be confirmed'
 fi
-
-# Получаем payload из аргументов ($1)
-PAYLOAD="$1"
-
-if [ -z "$PAYLOAD" ]; then
-  echo '{"error":"No payload received (empty $1)"}'
-  exit 1
+if ! printf '%s' "$TG_RESULT" | jq -e '.ok == true' >/dev/null 2>&1; then
+  fail 'Telegram delivery could not be confirmed'
 fi
-
-# Парсим JSON (проверяем, что jq работает)
-if ! command -v jq >/dev/null 2>&1; then
-  echo '{"error":"jq not installed"}'
-  exit 1
-fi
-
-MESSAGE=$(echo "$PAYLOAD" | jq -r '.message // empty')
-RECAPTCHA_TOKEN=$(echo "$PAYLOAD" | jq -r '.recaptchaToken // empty')
-
-if [ -z "$MESSAGE" ]; then
-  echo '{"error":"Missing message in JSON payload"}'
-  exit 1
-fi
-
-if [ -z "$RECAPTCHA_TOKEN" ]; then
-  echo '{"error":"Missing recaptchaToken in JSON payload"}'
-  exit 1
-fi
-
-# Проверяем reCAPTCHA
-RECAPTCHA_RESULT=$(curl -s -X POST \
-  "https://www.google.com/recaptcha/api/siteverify" \
-  -d "secret=${RECAPTCHA_SECRET_KEY}" \
-  -d "response=${RECAPTCHA_TOKEN}")
-
-SUCCESS=$(echo "$RECAPTCHA_RESULT" | jq -r '.success // false')
-
-if [ "$SUCCESS" != "true" ]; then
-  ERROR_CODE=$(echo "$RECAPTCHA_RESULT" | jq -r '.["error-codes"][0] // "unknown"')
-  echo "{\"error\":\"Recaptcha failed\", \"code\":\"$ERROR_CODE\"}"
-  exit 1
-fi
-
-SCORE=$(echo "$RECAPTCHA_RESULT" | jq -r '.score // 0')
-
-# Отправляем в Telegram
-TG_RESULT=$(curl -s -X POST \
-  "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-  -H "Content-Type: application/json" \
-  -d "{\"chat_id\":\"${TELEGRAM_CHAT_ID}\",\"text\":$(echo "$MESSAGE" | jq -Rs .),\"parse_mode\":\"HTML\"}")
-
-if echo "$TG_RESULT" | jq -e '.ok' >/dev/null 2>&1; then
-  echo "{\"success\":true, \"score\":$SCORE}"
-else
-  echo "{\"error\":\"Telegram API error\", \"response\":$(echo "$TG_RESULT" | jq -R .)}"
-  exit 1
-fi
+jq -n --argjson score "$SCORE" '{success: true, score: $score}'
