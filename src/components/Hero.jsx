@@ -27,10 +27,12 @@ export default function Hero() {
                             <span className="ml-2 max-w-32 text-xs leading-relaxed text-neutral-600">Начать можно<br />с простого сообщения</span>
                         </div>
                     </motion.div>
-                    <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} className="relative mx-auto w-full max-w-[460px] px-5 pb-8 sm:px-8">
-                        <div aria-hidden="true" className="absolute inset-x-5 bottom-4 top-3 rotate-6 rounded-[48%_48%_38%_38%] border border-primary/25 sm:inset-x-8" />
-                        <div className="relative aspect-[0.92] overflow-hidden rounded-[48%_48%_38%_38%] bg-primary-light/35 ring-8 ring-white/60">
-                            <img src="/images/popova-001.png" alt="Юлия Попова, психолог и тьютор" fetchPriority="high" width="512" height="512" className="h-full w-full object-cover" />
+                    <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} className="relative mx-auto w-full max-w-[500px] pb-8">
+                        <div className="relative aspect-square">
+                            <img src="/images/portrait-botanical-frame.png" alt="" aria-hidden="true" width="1024" height="1024" decoding="async" className="pointer-events-none absolute inset-0 h-full w-full object-contain" />
+                            <div id="hero-portrait-circle" className="absolute inset-[9%] overflow-hidden rounded-full bg-primary-light ring-[6px] ring-neutral-50 shadow-[0_12px_40px_-24px_#31513C55]">
+                                <img src="/images/popova-circle-photo.png" alt="Юлия Попова, психолог и тьютор" fetchPriority="high" width="1024" height="1024" decoding="async" className="h-full w-full object-cover" />
+                            </div>
                         </div>
                         <div className="absolute bottom-2 left-0 flex items-center gap-3 rounded-2xl border border-primary-dark/10 bg-white px-5 py-4 shadow-[0_8px_24px_-16px_#31513C55] sm:left-1">
                             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 text-primary-dark"><Message size={19} /></span>

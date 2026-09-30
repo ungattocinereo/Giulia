@@ -3,28 +3,28 @@
     "file": "popovatalk-og.png",
     "width": 1730,
     "height": 909,
-    "bytes": 1757454,
-    "sha256": "11dcb68b78e4561830415c478eeeac6ac8ab6639e191a6bf22dc7791ebea669f"
+    "bytes": 1668366,
+    "sha256": "754871fb1d1031f618f6a69818133a64eaed62b2a56578c611b83533fed7ff9c"
   },
   "twitter": {
     "file": "popovatalk-twitter.png",
     "width": 1774,
     "height": 887,
-    "bytes": 1743785,
-    "sha256": "aa08004c89b208fee9a624a23f6aa44d51a3e5632439977440c9ff445a7a18d6"
+    "bytes": 1725203,
+    "sha256": "055a4b99a0c10ca8d3881ef95322e2d3d64bd649290c9c2fb7a14c1881825a84"
   },
   "square": {
     "file": "popovatalk-square.png",
     "width": 1254,
     "height": 1254,
-    "bytes": 1923327,
-    "sha256": "e4f1bec560d39f90aca48b1a91d00d563d9f7268ab011ac0f22bb13b6ce65749"
+    "bytes": 1853552,
+    "sha256": "b5536d791d09c1ef9bbbe56226caa9d2f5b16061a9f02ec0a7c6c91e13c42582"
   },
   "story": {
     "file": "popovatalk-story.png",
     "width": 941,
-    "height": 1672,
-    "bytes": 1795576,
-    "sha256": "5e223b8d953ee228aa20113825cb50f8d040b2d5f45cddf50d5ceda52d56be7e"
+    "height": 1671,
+    "bytes": 1743139,
+    "sha256": "d04845d710362835af0fb76dfd2efdd876660aa3a8e9c95d9028cc373eaff5ae"
   }
 }

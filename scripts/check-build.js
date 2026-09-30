@@ -17,7 +17,7 @@ export async function verifyBuild(output = 'dist') {
   const index = await readFile(path.join(output, 'index.html'), 'utf8');
   assert.match(index, /https:\/\/popovatalk\.ru\//);
   assert.match(index, /www\.google\.com\/recaptcha\/api\.js/);
-  for (const asset of ['/images/popova-001.png', '/images/background-pastel.jpg', '/images/popova-video.mp4']) {
+  for (const asset of ['/images/popova-001.png', '/images/popova-circle-photo.png', '/images/portrait-botanical-frame.png', '/images/background-pastel.jpg', '/images/popova-video.mp4']) {
     assert.ok(files.includes(path.join(output, asset)), `Missing ${asset}`);
   }
   for (const match of index.matchAll(/(?:src|href)="(\/assets\/[^"?]+)"/g)) {
