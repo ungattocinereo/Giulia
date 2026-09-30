@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import compression from 'vite-plugin-compression2'
+import seoPrerender from './scripts/seo/prerender-plugin.js'
 import { constants } from 'zlib'
 import { fileURLToPath, URL } from 'node:url'
 
@@ -20,6 +21,7 @@ export default defineConfig(({ mode }) => {
     preview: { proxy },
     plugins: [
       react(),
+      seoPrerender(),
       compression({
         algorithm: 'brotliCompress',
         include: [/\.(js|css|html|svg|json)$/],

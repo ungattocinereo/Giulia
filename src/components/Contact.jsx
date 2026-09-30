@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Telegram, WhatsApp, Envelope, ArrowRight, Check, Spinner, Message, Shield } from './ui/icons';
 import { sendToTelegram } from '../utils/telegram';
 import { CONTACT_LIMITS, getContactError } from '../utils/validation';
 import PhoneSpoiler from './PhoneSpoiler';
 
 export default function Contact({ onOpenPrivacyPolicy }) {
+    const [isHydrated, setIsHydrated] = useState(false);
+    useEffect(() => setIsHydrated(true), []);
     const [formData, setFormData] = useState({
         name: '',
         contact: '',
@@ -68,7 +70,7 @@ export default function Contact({ onOpenPrivacyPolicy }) {
                             <div className="section-label !text-primary-light"><Message size={14} /> Первый шаг</div>
                             <h2 className="mb-6 font-display text-5xl font-medium !text-white">Давайте<br /><span className="italic">поговорим.</span></h2>
                             <p className="text-white/80 mb-10 leading-relaxed">
-                                Запишитесь на консультацию или задайте любой вопрос. Я отвечу в течение дня.
+                                Запишитесь на консультацию онлайн или очно в Москве, или задайте любой вопрос. Я отвечу в течение дня.
                             </p>
 
                             <div className="space-y-5">
@@ -116,8 +118,9 @@ export default function Contact({ onOpenPrivacyPolicy }) {
                     <div className="p-7 sm:p-10 lg:w-3/5 lg:p-12">
                         <h3 className="mb-2 text-xl font-semibold text-neutral-900">Записаться на консультацию</h3>
                         <p className="mb-8 text-sm text-neutral-600">Оставьте удобный контакт — я свяжусь с вами.</p>
+                        <noscript>Для отправки заявки включите JavaScript или используйте контакты Telegram, WhatsApp, email и телефон выше.</noscript>
                         <form onSubmit={handleSubmit}>
-                            <fieldset disabled={formStatus === 'loading' || formStatus === 'success'} className="space-y-5">
+                            <fieldset disabled={!isHydrated || formStatus === 'loading' || formStatus === 'success'} className="space-y-5">
                                 <div>
                                     <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-2">Ваше имя</label>
                                     <input

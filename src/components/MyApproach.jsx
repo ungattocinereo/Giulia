@@ -21,7 +21,7 @@ export default function MyApproach() {
                 </div>
                 <div className="mt-12 grid gap-4 md:grid-cols-3 sm:mt-16 sm:gap-6">
                     {principles.map((item, index) => (
-                        <motion.div key={item.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }} className="rounded-2xl border border-primary-dark/10 bg-white/75 p-7 sm:p-8">
+                        <motion.div key={item.title} initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }} className="rounded-2xl border border-primary-dark/10 bg-white/75 p-7 sm:p-8">
                             <div className="mb-7 flex items-center justify-between"><span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary-dark"><item.icon size={21} /></span><span className="font-display text-3xl text-primary/50">0{index + 1}</span></div>
                             <h3 className="mb-3 text-xl font-semibold text-neutral-900">{item.title}</h3><p className="text-sm leading-relaxed text-neutral-600">{item.text}</p>
                         </motion.div>

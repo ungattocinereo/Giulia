@@ -1,0 +1,30 @@
+{
+  "og": {
+    "file": "popovatalk-og.png",
+    "width": 1730,
+    "height": 909,
+    "bytes": 1757454,
+    "sha256": "11dcb68b78e4561830415c478eeeac6ac8ab6639e191a6bf22dc7791ebea669f"
+  },
+  "twitter": {
+    "file": "popovatalk-twitter.png",
+    "width": 1774,
+    "height": 887,
+    "bytes": 1743785,
+    "sha256": "aa08004c89b208fee9a624a23f6aa44d51a3e5632439977440c9ff445a7a18d6"
+  },
+  "square": {
+    "file": "popovatalk-square.png",
+    "width": 1254,
+    "height": 1254,
+    "bytes": 1923327,
+    "sha256": "e4f1bec560d39f90aca48b1a91d00d563d9f7268ab011ac0f22bb13b6ce65749"
+  },
+  "story": {
+    "file": "popovatalk-story.png",
+    "width": 941,
+    "height": 1672,
+    "bytes": 1795576,
+    "sha256": "5e223b8d953ee228aa20113825cb50f8d040b2d5f45cddf50d5ceda52d56be7e"
+  }
+}

@@ -9,10 +9,12 @@ export default function Hero() {
             <AnimatedRays />
             <div className="page-container relative z-10">
                 <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                        <div className="section-label"><Leaf size={15} /> Психолог · Тьютор · Профориентолог</div>
-                        <h1 className="mb-7 text-[72px] font-medium leading-[0.9] sm:text-[100px] xl:text-[120px]">Юлия<br /><span className="italic text-primary-dark">Попова</span><span className="text-accent">.</span></h1>
-                        <p className="max-w-lg text-base leading-relaxed text-neutral-600 sm:text-lg">Помогаю детям, подросткам и взрослым найти свой путь в учёбе, карьере и отношениях. Комплексный подход к решению ваших задач.</p>
+                    <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                        <h1 className="mb-7 font-medium">
+                            <span className="section-label !font-sans"><Leaf size={15} /> Психолог · Тьютор · Профориентолог</span>
+                            <span className="block text-[72px] leading-[0.9] sm:text-[100px] xl:text-[120px]">Юлия<br /><span className="italic text-primary-dark">Попова</span><span className="text-accent">.</span></span>
+                        </h1>
+                        <p className="max-w-lg text-base leading-relaxed text-neutral-600 sm:text-lg">Помогаю детям, подросткам и взрослым найти свой путь в учёбе, карьере и отношениях. Комплексный подход к решению ваших задач. Онлайн и очно в Москве.</p>
                         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                             <a href="#contacts" className="btn-primary">Записаться на консультацию <ArrowRight size={16} /></a>
                             <a href="#about" className="btn-secondary">Познакомиться ближе</a>
@@ -25,7 +27,7 @@ export default function Hero() {
                             <span className="ml-2 max-w-32 text-xs leading-relaxed text-neutral-600">Начать можно<br />с простого сообщения</span>
                         </div>
                     </motion.div>
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} className="relative mx-auto w-full max-w-[460px] px-5 pb-8 sm:px-8">
+                    <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} className="relative mx-auto w-full max-w-[460px] px-5 pb-8 sm:px-8">
                         <div aria-hidden="true" className="absolute inset-x-5 bottom-4 top-3 rotate-6 rounded-[48%_48%_38%_38%] border border-primary/25 sm:inset-x-8" />
                         <div className="relative aspect-[0.92] overflow-hidden rounded-[48%_48%_38%_38%] bg-primary-light/35 ring-8 ring-white/60">
                             <img src="/images/popova-001.png" alt="Юлия Попова, психолог и тьютор" fetchPriority="high" width="512" height="512" className="h-full w-full object-cover" />

@@ -2,11 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { CreditCard, Check, Calendar, Message, Compass, ArrowRight, Star } from './ui/icons';
 
-const sessions = [
-    { title: 'Встреча-знакомство', price: 'Бесплатно', duration: '20 минут', text: 'Знакомимся, обсуждаем вашу ситуацию, определяем формат работы. Никаких обязательств.', icon: Message, button: 'Записаться бесплатно' },
-    { title: 'Индивидуальная сессия', price: '4 000 ₽', duration: '60–90 минут', text: 'Работа один на один: психологическая консультация или тьюторская сессия', icon: Compass, dark: true, button: 'Записаться' },
-    { title: 'Парная/семейная сессия', price: '5 000 ₽', duration: '90 минут', text: 'Работа с парой или семьёй: родитель + ребёнок, два родителя', icon: Message, button: 'Записаться' },
-];
+import { sessions } from '../content/site';
+
+const sessionIcons = { message: Message, compass: Compass };
 
 export default function Pricing({ onOpenModal }) {
     return (
@@ -18,18 +16,20 @@ export default function Pricing({ onOpenModal }) {
                     <p className="text-neutral-600">Без скрытых платежей. Первая встреча — бесплатно!</p>
                 </div>
                 <div className="grid gap-5 md:grid-cols-3">
-                    {sessions.map((session, index) => (
+                    {sessions.map((session, index) => {
+                        const SessionIcon = sessionIcons[session.icon];
+                        return (
                         <motion.div key={session.title} whileHover={{ y: -4 }} className={`flex flex-col rounded-3xl border p-7 sm:p-8 ${session.dark ? 'border-primary-dark bg-primary-dark text-white' : 'border-primary-dark/10 bg-white text-neutral-900'}`}>
-                            <div className="mb-7 flex items-center justify-between"><span className={`flex h-11 w-11 items-center justify-center rounded-full ${session.dark ? 'bg-white/10' : 'bg-primary-50 text-primary-dark'}`}><session.icon size={19} /></span>{index === 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-3 py-1 text-[10px] font-bold tracking-wide text-primary-dark"><Star size={10} /> РЕКОМЕНДУЮ</span>}</div>
+                            <div className="mb-7 flex items-center justify-between"><span className={`flex h-11 w-11 items-center justify-center rounded-full ${session.dark ? 'bg-white/10' : 'bg-primary-50 text-primary-dark'}`}><SessionIcon size={19} /></span>{index === 0 && <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-3 py-1 text-[10px] font-bold tracking-wide text-primary-dark"><Star size={10} /> РЕКОМЕНДУЮ</span>}</div>
                             <div className="mb-4 text-3xl font-semibold tracking-tight sm:text-4xl">{session.price}</div>
                             <h3 className="mb-3 text-lg font-semibold">{session.title}</h3>
                             <div className={`mb-5 flex items-center gap-2 text-xs ${session.dark ? 'text-white/75' : 'text-neutral-600'}`}><Calendar size={12} /> {session.duration}</div>
                             <p className={`mb-8 flex-1 text-sm leading-relaxed ${session.dark ? 'text-white/80' : 'text-neutral-600'}`}>{session.text}</p>
                             <a href="#contacts" className={index === 0 ? 'btn-primary w-full' : `btn-secondary w-full ${session.dark ? '!border-white/30 !bg-transparent !text-white hover:!bg-white/10' : ''}`}>{session.button}<ArrowRight size={14} /></a>
                         </motion.div>
-                    ))}
+                    ); })}
                 </div>
-                <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative mt-6 overflow-hidden rounded-3xl bg-primary-dark p-7 text-white sm:p-10 lg:p-12">
+                <motion.div initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative mt-6 overflow-hidden rounded-3xl bg-primary-dark p-7 text-white sm:p-10 lg:p-12">
                     <div aria-hidden="true" className="absolute -right-24 -top-24 h-80 w-80 rounded-full border border-white/10" /><div aria-hidden="true" className="absolute -right-12 -top-12 h-56 w-56 rounded-full border border-white/10" />
                     <div className="relative grid gap-8 lg:grid-cols-[1fr_0.5fr] lg:gap-16">
                         <div>

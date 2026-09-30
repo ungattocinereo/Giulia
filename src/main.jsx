@@ -1,11 +1,11 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import App from './App.jsx'
 import { MotionConfig } from 'framer-motion'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <MotionConfig reducedMotion="user"><App /></MotionConfig>
-  </React.StrictMode>,
-)
+const root = document.getElementById('root')
+const app = <React.StrictMode><MotionConfig reducedMotion="user"><App /></MotionConfig></React.StrictMode>
+const options = { identifierPrefix: 'popovatalk-' }
+if (root.hasChildNodes()) hydrateRoot(root, app, options)
+else createRoot(root, options).render(app)

@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Leaf } from './ui/icons';
 import { motion } from 'framer-motion';
 
 export default function About({ onOpenModal }) {
     const videoRef = useRef(null);
+    const [isVideoReady, setIsVideoReady] = useState(false);
 
     useEffect(() => {
         const video = videoRef.current;
@@ -27,7 +28,18 @@ export default function About({ onOpenModal }) {
         };
 
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+            if (entries.some(entry => entry.isIntersecting)) {
+                setIsVideoReady(true);
+                observer.disconnect();
+            }
+        }, { rootMargin: '200px' }) : null;
+        if (observer) observer.observe(video);
+        else setIsVideoReady(true);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            observer?.disconnect();
+        };
     }, []);
 
     return (
@@ -37,7 +49,7 @@ export default function About({ onOpenModal }) {
 
                     {/* Text Content */}
                     <motion.div
-                        initial={{ opacity: 0, x: -30 }}
+                        initial={false}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
@@ -71,7 +83,7 @@ export default function About({ onOpenModal }) {
 
                     {/* Photo Placeholder */}
                     <motion.div
-                        initial={{ opacity: 0, x: 30 }}
+                        initial={false}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
@@ -81,7 +93,9 @@ export default function About({ onOpenModal }) {
                             <div className="aspect-[4/5] overflow-hidden rounded-[2rem] border border-primary-dark/10 bg-primary-50">
                                 <video
                                     ref={videoRef}
-                                    src="/images/popova-video.mp4"
+                                    src={isVideoReady ? '/images/popova-video.mp4' : undefined}
+                                    poster="/images/popova-001.png"
+                                    preload="none"
                                     autoPlay
                                     muted
                                     playsInline

@@ -1,0 +1,28 @@
+# Fragment for /etc/caddy/Caddyfile. Keep the existing global options/snippets.
+popovatalk.ru {
+	import common
+	import hooks
+	handle {
+		root * /srv/Giulia/dist
+
+		@buildAssets path /assets/*
+		header @buildAssets Cache-Control "public, max-age=31536000, immutable"
+		@images path /images/*
+		header @images Cache-Control "public, max-age=86400, must-revalidate"
+		@documents path / /index.html /robots.txt /sitemap.xml /llms.txt /llms-full.txt
+		header @documents Cache-Control "no-cache"
+
+		file_server {
+			precompressed br gzip
+		}
+	}
+}
+
+www.popovatalk.ru {
+	import common
+	# Preserve the existing POST endpoint before redirecting page requests.
+	import hooks
+	handle {
+		redir https://popovatalk.ru{uri} 308
+	}
+}

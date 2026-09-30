@@ -3,42 +3,7 @@ import { Check, Star, Crown, Calendar, Compass } from './ui/icons';
 import { motion } from 'framer-motion';
 import { cn } from '../utils/cn';
 
-const services = [
-    {
-        title: "Индивидуальная сессия",
-        description: "Психологическая консультация или тьюторская сессия",
-        duration: "60–90 мин",
-        price: "4 000 ₽",
-        features: ["Личная работа", "Разбор ситуации", "Рекомендации"],
-        highlight: false
-    },
-    {
-        title: "Парная/семейная сессия",
-        description: "Работа с парой или семьёй (родитель + ребёнок)",
-        duration: "90 мин",
-        price: "5 000 ₽",
-        features: ["Работа с отношениями", "Медиация конфликтов", "Общие решения"],
-        highlight: false
-    },
-    {
-        title: "Профориентация",
-        description: "Глубокий анализ, подбор профессий, план действий",
-        duration: "120–180 мин",
-        price: "25 000 ₽",
-        features: ["Тестирование", "Анализ личности", "Карьерная карта", "План развития"],
-        highlight: "top",
-        badge: "ХИТ"
-    },
-    {
-        title: "Пакет «Всё включено»",
-        description: "Профориентация + семейная терапия + сопровождение",
-        duration: "Индивидуально",
-        price: "от 30 000 ₽",
-        features: ["Полная диагностика", "Семейные сессии", "Сопровождение 1 месяц", "Личная поддержка"],
-        highlight: "premium",
-        badge: "PREMIUM"
-    }
-];
+import { services } from '../content/site';
 
 export default function ComprehensiveApproach() {
     return (
@@ -49,7 +14,7 @@ export default function ComprehensiveApproach() {
                     <div className="hidden grid-cols-[1.2fr_1.1fr_0.65fr_0.6fr] gap-6 bg-neutral-50 px-7 py-5 text-[10px] font-bold uppercase tracking-[0.15em] text-neutral-600 lg:grid"><span>Услуга</span><span>Что входит</span><span>Длительность</span><span className="text-right">Стоимость</span></div>
                     <div className="divide-y divide-primary-dark/10">
                         {services.map((service, index) => (
-                            <motion.div key={service.title} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.05 }} className={cn('grid gap-5 p-6 sm:p-7 lg:grid-cols-[1.2fr_1.1fr_0.65fr_0.6fr] lg:items-center lg:gap-6', service.highlight === 'top' && 'bg-primary-50/60', service.highlight === 'premium' && 'bg-secondary-50')}>
+                            <motion.div key={service.title} initial={false} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.05 }} className={cn('grid gap-5 p-6 sm:p-7 lg:grid-cols-[1.2fr_1.1fr_0.65fr_0.6fr] lg:items-center lg:gap-6', service.highlight === 'top' && 'bg-primary-50/60', service.highlight === 'premium' && 'bg-secondary-50')}>
                                 <div><div className="mb-2 flex flex-wrap items-center gap-2"><h3 className="text-base font-semibold text-neutral-900">{service.title}</h3>{service.badge && <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-dark/10 px-2 py-1 text-[9px] font-bold tracking-wide text-primary-dark">{service.highlight === 'premium' ? <Crown size={10} /> : <Star size={10} />}{service.badge}</span>}</div><p className="text-xs leading-relaxed text-neutral-600">{service.description}</p></div>
                                 <ul className="space-y-2">{service.features.map(feature => <li key={feature} className="flex items-start gap-2 text-xs text-neutral-600"><Check size={11} className="mt-1 shrink-0 text-primary" />{feature}</li>)}</ul>
                                 <span className="inline-flex items-center gap-2 text-xs text-neutral-600"><Calendar size={12} />{service.duration}</span>
