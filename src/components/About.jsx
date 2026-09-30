@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { UserCircle, ArrowRight } from 'phosphor-react';
+import { ArrowRight, Leaf } from './ui/icons';
 import { motion } from 'framer-motion';
 
 export default function About({ onOpenModal }) {
@@ -31,8 +31,8 @@ export default function About({ onOpenModal }) {
     }, []);
 
     return (
-        <section id="about" className="py-24 bg-white overflow-hidden">
-            <div className="container mx-auto px-4">
+        <section id="about" className="overflow-hidden bg-white py-20 sm:py-28">
+            <div className="page-container">
                 <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center max-w-6xl mx-auto">
 
                     {/* Text Content */}
@@ -42,13 +42,13 @@ export default function About({ onOpenModal }) {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <div className="inline-block mb-4 px-4 py-1 bg-secondary/15 text-secondary-dark rounded-full text-sm font-semibold tracking-wide uppercase">
-                            Обо мне
+                        <div className="section-label">
+                            <Leaf size={14} /> Обо мне
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-6">
+                        <h2 className="section-title mb-7">
                             Привет! Я — Юлия Попова
                         </h2>
-                        <div className="space-y-6 text-neutral-700 leading-relaxed text-lg">
+                        <div className="space-y-5 text-base leading-relaxed text-neutral-600 sm:text-lg">
                             <p>
                                 Я — психолог и тьютор с многолетним опытом работы с детьми, подростками
                                 и взрослыми.
@@ -62,7 +62,7 @@ export default function About({ onOpenModal }) {
                         </div>
                         <button
                             onClick={() => onOpenModal('about-details')}
-                            className="mt-10 bg-primary-dark text-white px-8 py-3 rounded-xl hover:bg-primary transition-all inline-flex items-center gap-2 shadow-lg hover:shadow-primary/30 hover:-translate-y-1"
+                            className="btn-secondary mt-8"
                         >
                             Подробнее обо мне
                             <ArrowRight size={20} />
@@ -75,10 +75,10 @@ export default function About({ onOpenModal }) {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="order-first md:order-last"
+                        className="mx-auto w-full max-w-md md:order-last"
                     >
                         <div className="relative">
-                            <div className="aspect-[4/5] bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl overflow-hidden shadow-2xl border border-white/50">
+                            <div className="aspect-[4/5] overflow-hidden rounded-[2rem] border border-primary-dark/10 bg-primary-50">
                                 <video
                                     ref={videoRef}
                                     src="/images/popova-video.mp4"

@@ -9,16 +9,17 @@ import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import PrivacyPolicy from './components/PrivacyPolicy';
+import { Close } from './components/ui/icons';
 
 export default function App() {
   const [activeModal, setActiveModal] = useState(null);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white font-sans text-neutral-800 selection:bg-primary/20 selection:text-primary-dark">
+    <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800 selection:bg-primary/20 selection:text-primary-dark">
       <Header />
 
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Hero />
         <About onOpenModal={setActiveModal} />
         <MyApproach />
@@ -45,9 +46,9 @@ export default function App() {
             </p>
             <button
               onClick={() => setActiveModal(null)}
-              className="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-dark transition-colors"
+              className="btn-primary w-full"
             >
-              Закрыть
+              Закрыть <Close size={14} />
             </button>
           </div>
         </div>

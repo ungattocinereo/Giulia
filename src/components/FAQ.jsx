@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { CaretDown } from 'phosphor-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '../utils/cn';
+import React from 'react';
+import { CircleQuestion, ArrowRight } from './ui/icons';
+import { FaqAccordion } from './ui/faq-accordion';
 
 const faqs = [
     {
@@ -36,58 +35,16 @@ const faqs = [
 ];
 
 export default function FAQ() {
-    const [openIndex, setOpenIndex] = useState(null);
-
     return (
-        <section className="py-24 bg-white">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-16 max-w-3xl mx-auto">
-                    <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-6">
-                        Часто задаваемые вопросы
-                    </h2>
-                    <p className="text-neutral-700 text-lg">
-                        Ответы на самые популярные вопросы о работе со мной
-                    </p>
+        <section id="faq" className="bg-neutral-50 py-20 sm:py-28">
+            <div className="page-container grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+                <div>
+                    <div className="section-label"><CircleQuestion size={15} /> Частые вопросы</div>
+                    <h2 className="section-title mb-6">Перед первой<br />встречей</h2>
+                    <p className="max-w-sm text-neutral-600">Ответы на самые популярные вопросы о работе со мной.</p>
+                    <a href="#contacts" className="text-link mt-7">Задать свой вопрос <ArrowRight size={14} /></a>
                 </div>
-
-                <div className="max-w-3xl mx-auto space-y-4">
-                    {faqs.map((faq, index) => (
-                        <div
-                            key={index}
-                            className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:border-primary/30 transition-colors"
-                        >
-                            <button
-                                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                                className="w-full px-8 py-6 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
-                            >
-                                <span className="font-semibold text-neutral-900 text-lg pr-8">
-                                    {faq.question}
-                                </span>
-                                <CaretDown
-                                    size={24}
-                                    className={cn(
-                                        "flex-shrink-0 text-gray-400 transition-transform duration-300",
-                                        openIndex === index && "transform rotate-180 text-primary-dark"
-                                    )}
-                                />
-                            </button>
-                            <AnimatePresence>
-                                {openIndex === index && (
-                                    <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                    >
-                                        <div className="px-8 pb-8 text-neutral-700 leading-relaxed border-t border-gray-50 pt-4">
-                                            {faq.answer}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </div>
-                    ))}
-                </div>
+                <FaqAccordion items={faqs} />
             </div>
         </section>
     );

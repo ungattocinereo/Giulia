@@ -1,49 +1,18 @@
 import React from 'react';
-import { PaperPlaneTilt, ChatCircle, Envelope } from 'phosphor-react';
+import { Telegram, WhatsApp, Envelope, ArrowRight } from './ui/icons';
 
 export default function Footer({ onOpenPrivacyPolicy }) {
-    const currentYear = new Date().getFullYear();
-
     return (
-        <footer className="bg-primary-dark text-white py-12 border-t border-white/10">
-            <div className="container mx-auto px-4">
-                <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-
-                    <div className="text-center md:text-left">
-                        <h3 className="text-2xl font-bold mb-2">Юлия Попова</h3>
-                        <p className="text-white/60">Психолог • Тьютор • Профориентолог</p>
+        <footer className="bg-primary-dark py-10 text-white sm:py-14">
+            <div className="page-container">
+                <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-center">
+                    <div><a href="#home" className="font-display text-4xl">Юлия Попова<span className="text-secondary-light">.</span></a><p className="mt-2 text-xs text-white/75">Психолог · Тьютор · Профориентолог</p></div>
+                    <div className="flex items-center gap-3">
+                        {[{ icon: Telegram, href: 'https://t.me/MissisPoppins', label: 'Telegram' }, { icon: WhatsApp, href: 'https://wa.me/79688274447', label: 'WhatsApp' }, { icon: Envelope, href: 'mailto:radio.popova@gmail.com', label: 'Email' }].map(social => <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 transition-colors hover:bg-white/15"><social.icon size={20} /></a>)}
+                        <a href="#home" className="ml-3 flex h-11 w-11 items-center justify-center rounded-full bg-white/10" aria-label="Вернуться наверх"><ArrowRight size={15} className="-rotate-90" /></a>
                     </div>
-
-                    <div className="flex gap-4">
-                        {[
-                            { icon: PaperPlaneTilt, href: "https://t.me/MissisPoppins", label: "Telegram" },
-                            { icon: ChatCircle, href: "https://wa.me/79688274447", label: "WhatsApp" },
-                            { icon: Envelope, href: "mailto:radio.popova@gmail.com", label: "Email" },
-                        ].map((social, index) => (
-                            <a
-                                key={index}
-                                href={social.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all hover:scale-110"
-                                aria-label={social.label}
-                            >
-                                <social.icon size={20} weight="fill" />
-                            </a>
-                        ))}
-                    </div>
-
-                    <div className="text-center md:text-right text-white/40 text-sm">
-                        <p>&copy; {currentYear} Все права защищены</p>
-                        <button
-                            onClick={onOpenPrivacyPolicy}
-                            className="mt-1 hover:text-white/60 transition-colors"
-                        >
-                            Политика конфиденциальности
-                        </button>
-                    </div>
-
                 </div>
+                <div className="mt-9 flex flex-col justify-between gap-4 border-t border-white/20 pt-6 text-xs text-white/75 sm:flex-row"><p>© {new Date().getFullYear()} Юлия Попова. Все права защищены.</p><button type="button" onClick={onOpenPrivacyPolicy} className="text-left underline decoration-white/30 underline-offset-4 transition-colors hover:text-white">Политика конфиденциальности</button></div>
             </div>
         </footer>
     );

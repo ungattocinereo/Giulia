@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Phone } from 'phosphor-react';
+import { Phone } from './ui/icons';
+import { useReducedMotion } from 'framer-motion';
 
 /**
  * PhoneSpoiler Component
@@ -8,6 +9,7 @@ import { Phone } from 'phosphor-react';
  */
 export default function PhoneSpoiler({ phone, className = '' }) {
     const [isRevealed, setIsRevealed] = useState(false);
+    const reducedMotion = useReducedMotion();
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
 
@@ -21,7 +23,7 @@ export default function PhoneSpoiler({ phone, className = '' }) {
         const width = canvas.width;
         const height = canvas.height;
 
-        let frameCount = 0;
+        let frameCount = 2;
 
         // Animate noise/static effect (3x slower)
         const drawNoise = () => {
@@ -44,7 +46,7 @@ export default function PhoneSpoiler({ phone, className = '' }) {
                 ctx.putImageData(imageData, 0, 0);
             }
 
-            animationRef.current = requestAnimationFrame(drawNoise);
+            if (!reducedMotion) animationRef.current = requestAnimationFrame(drawNoise);
         };
 
         drawNoise();
@@ -54,7 +56,7 @@ export default function PhoneSpoiler({ phone, className = '' }) {
                 cancelAnimationFrame(animationRef.current);
             }
         };
-    }, [isRevealed]);
+    }, [isRevealed, reducedMotion]);
 
     const handleReveal = () => {
         setIsRevealed(true);

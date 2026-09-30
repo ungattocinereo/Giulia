@@ -1,57 +1,56 @@
-@import "@fontsource/outfit/300.css";
-@import "@fontsource/outfit/400.css";
-@import "@fontsource/outfit/500.css";
-@import "@fontsource/outfit/600.css";
-@import "@fontsource/outfit/700.css";
+@import "@fontsource/manrope/cyrillic-400.css";
+@import "@fontsource/manrope/latin-400.css";
+@import "@fontsource/manrope/cyrillic-500.css";
+@import "@fontsource/manrope/latin-500.css";
+@import "@fontsource/manrope/cyrillic-600.css";
+@import "@fontsource/manrope/latin-600.css";
+@import "@fontsource/manrope/cyrillic-700.css";
+@import "@fontsource/manrope/latin-700.css";
+@import "@fontsource/cormorant-garamond/cyrillic-500.css";
+@import "@fontsource/cormorant-garamond/latin-500.css";
+@import "@fontsource/cormorant-garamond/cyrillic-600.css";
+@import "@fontsource/cormorant-garamond/latin-600.css";
+@import "@fontsource/cormorant-garamond/cyrillic-500-italic.css";
+@import "@fontsource/cormorant-garamond/latin-500-italic.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply font-sans text-neutral-800 antialiased;
-  }
+  html { scroll-behavior: smooth; scroll-padding-top: 112px; }
+  body { @apply bg-neutral-50 font-sans text-neutral-700 antialiased; line-height: 1.7; }
+  h1, h2 { @apply font-display text-neutral-900; letter-spacing: -0.035em; line-height: 1.08; }
+  h3, h4, h5, h6 { @apply font-sans; letter-spacing: -0.025em; line-height: 1.35; }
+  button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 3px solid #6d8052; outline-offset: 4px; }
+  input, select, textarea { min-width: 0; }
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer components {
+  .page-container { @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10; }
+  .section-label { @apply mb-5 inline-flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.18em] text-primary-dark; }
+  .section-title { @apply text-4xl font-medium sm:text-5xl lg:text-6xl; }
+  .btn-primary { @apply inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full bg-accent px-6 py-3.5 text-sm font-bold text-white shadow-[0_6px_20px_-8px_#D53A2566] transition duration-200 hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-[0_10px_24px_-8px_#D53A2566] disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70; }
+  .btn-secondary { @apply inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full border border-primary-dark/25 bg-white/70 px-6 py-3.5 text-sm font-semibold text-primary-dark transition duration-200 hover:-translate-y-0.5 hover:border-primary-dark hover:bg-white; }
+  .text-link { @apply inline-flex items-center gap-2 text-sm font-semibold text-primary-dark underline decoration-primary/30 underline-offset-4 transition hover:decoration-primary-dark; }
+  .icon-link { @apply flex h-11 w-11 items-center justify-center rounded-full border border-primary-dark/15 bg-white/60 text-primary-dark transition duration-200 hover:-translate-y-0.5 hover:border-primary-dark/40 hover:bg-primary-dark hover:text-white; }
+  .form-input { @apply w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-800 transition placeholder:text-neutral-500 focus:border-primary focus:bg-white disabled:opacity-60; }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Adapted VengeanceUI rays: quiet sage and apricot, without a fixed mobile layer. */
+.rays-layer { filter: blur(18px); opacity: 0.38; mask-image: radial-gradient(ellipse at 90% 15%, black 10%, transparent 72%); }
+.rays-motion { animation: rays-drift 28s linear infinite alternate; }
+@keyframes rays-drift { from { background-position: 0% 50%, 0% 50%; } to { background-position: 100% 50%, 100% 50%; } }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 16px;
-  line-height: 1.7;
-  color: #1a1a1a;
-  background-color: #FFFFFF;
-}
+.mobile-menu { margin: 0 0 0 auto; width: min(390px, 100%); height: 100dvh; max-height: none; max-width: none; padding: 0; border: 0; background: #fbf8f1; color: #203a2b; }
+.mobile-menu[open] { display: flex; flex-direction: column; animation: menu-enter 220ms ease-out; }
+.mobile-menu::backdrop { background: rgb(24 43 31 / 45%); backdrop-filter: blur(4px); }
+@keyframes menu-enter { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: translateX(0); } }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-weight: 600;
-  color: #0a0a0a;
-  letter-spacing: -0.02em;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+@layer utilities { .text-balance { text-wrap: balance; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .rays-motion { animation: none !important; }
 }

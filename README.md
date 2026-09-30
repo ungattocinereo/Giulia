@@ -15,7 +15,7 @@ test -f .env || cp .env.example .env
 npm run dev
 ```
 
-Открыть `http://localhost:5173`. Для проверки production-сборки: `npm run build`, затем `npm run preview`.
+Открыть `http://localhost:5173`. Для проверки production-сборки: `npm run build`, затем `npm run preview -- --host 127.0.0.1 --port 4174 --strictPort`. Локальный просмотр доступен на `http://127.0.0.1:4174/`.
 
 Токен Telegram и секрет reCAPTCHA для просмотра сайта **не нужны**. `.env.example` описывает только необязательный `POPOVATALK_WEBHOOK_TARGET` для локального прокси. По умолчанию он выключен. Прокси разрешает только `/hooks/send-telegram`, а не webhook обновления сайта.
 
@@ -52,5 +52,11 @@ npm run check
 - `src/utils/validation.js` — проверки контактов и пределы длины полей.
 - `public/images/` — фото, фон и видео.
 - `index.html` — SEO, favicon и загрузка reCAPTCHA.
+
+## Оформление
+
+Цвета и шрифты задаются в `tailwind.config.js`, общие кнопки, поля и анимации — в `src/index.css`. Manrope и Cormorant Garamond с кириллицей поставляются вместе с сайтом. Все иконки подключаются по отдельности из Font Awesome через `src/components/ui/icons.jsx`.
+
+`AnimatedRays` и `FaqAccordion` установлены через shadcn из VengeanceUI и адаптированы к светлой теме. Исходники находятся в `src/components/ui/`, лицензия — в [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Фоновая анимация и переходы учитывают настройку уменьшения движения. Мобильная навигация использует стандартный диалог браузера с удержанием фокуса и закрытием по Escape.
 
 Текущий порядок безопасного обновления описан в [DEPLOYMENT.md](DEPLOYMENT.md). Результаты сверки локальной копии, GitHub и VPS — в [PROJECT_STATUS.md](PROJECT_STATUS.md).

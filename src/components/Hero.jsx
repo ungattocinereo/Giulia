@@ -1,140 +1,44 @@
 import React from 'react';
-import { PaperPlaneTilt, ChatCircle, Envelope, UserCircle } from 'phosphor-react';
 import { motion } from 'framer-motion';
+import { Telegram, WhatsApp, Envelope, ArrowRight, Leaf, Check, Message } from './ui/icons';
+import { AnimatedRays } from './ui/animated-rays';
 
 export default function Hero() {
-    const scrollToSection = (id) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    };
-
     return (
-        <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-[url('/images/background-pastel.jpg')] bg-cover bg-center">
-            {/* Content */}
-            <div className="container mx-auto px-4 relative z-10">
-                <div className="max-w-6xl mx-auto">
-                    <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
-
-                        {/* Text Content */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            className="flex-1 text-neutral-800 order-2 md:order-1 text-center md:text-left"
-                        >
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2, duration: 0.5 }}
-                                className="inline-block mb-6 px-4 py-2 bg-primary/15 backdrop-blur-sm rounded-full text-sm font-medium border border-primary/30 text-primary-dark"
-                            >
-                                Психолог • Тьютор • Профориентолог
-                            </motion.div>
-
-                            <motion.h1
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3, duration: 0.5 }}
-                                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-neutral-900"
-                            >
-                                Юлия <span className="text-primary-dark">Попова</span>
-                            </motion.h1>
-
-                            <motion.p
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.4, duration: 0.5 }}
-                                className="text-lg md:text-xl mb-10 leading-relaxed text-neutral-600 max-w-2xl"
-                            >
-                                Помогаю детям, подросткам и взрослым найти свой путь в учёбе, карьере
-                                и отношениях. Комплексный подход к решению ваших задач.
-                            </motion.p>
-
-                            {/* CTA Buttons */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5, duration: 0.5 }}
-                                className="flex flex-col sm:flex-row gap-4 mb-10 justify-center md:justify-start"
-                            >
-                                <button
-                                    onClick={() => scrollToSection('contacts')}
-                                    className="bg-accent text-white px-8 py-4 rounded-xl font-semibold hover:bg-accent-dark transition-all shadow-lg hover:shadow-accent/30 hover:-translate-y-1"
-                                >
-                                    Записаться на консультацию
-                                </button>
-                                <button
-                                    onClick={() => scrollToSection('about')}
-                                    className="bg-white backdrop-blur-sm border-2 border-primary text-primary-dark px-8 py-4 rounded-xl font-semibold hover:bg-primary/10 transition-all hover:-translate-y-1"
-                                >
-                                    Узнать больше
-                                </button>
-                            </motion.div>
-
-                            {/* Social Links */}
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.6, duration: 0.5 }}
-                                className="flex gap-4 justify-center md:justify-start"
-                            >
-                                {[
-                                    { icon: PaperPlaneTilt, href: "https://t.me/MissisPoppins", label: "Telegram" },
-                                    { icon: ChatCircle, href: "https://wa.me/79688274447", label: "WhatsApp" },
-                                    { icon: Envelope, href: "mailto:radio.popova@gmail.com", label: "Email" },
-                                ].map((social, index) => (
-                                    <a
-                                        key={index}
-                                        href={social.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-12 h-12 bg-white hover:bg-primary/10 backdrop-blur-sm rounded-full flex items-center justify-center transition-all hover:scale-110 border-2 border-primary/30 hover:border-primary text-primary-dark"
-                                        aria-label={social.label}
-                                    >
-                                        <social.icon size={24} weight="fill" />
-                                    </a>
-                                ))}
-                            </motion.div>
-                        </motion.div>
-
-                        {/* Avatar Section */}
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.7 }}
-                            className="flex-shrink-0 order-1 md:order-2 relative"
-                        >
-                            <div className="relative">
-                                {/* Decorative rings */}
-                                <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl animate-pulse-slow"></div>
-                                <div className="absolute -inset-4 rounded-full border border-primary/10"></div>
-                                <div className="absolute -inset-8 rounded-full border border-primary/5"></div>
-
-                                {/* Avatar */}
-                                <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-sm border border-white/20 shadow-2xl overflow-hidden flex items-center justify-center group">
-                                    <img
-                                        src="/images/popova-001.png"
-                                        alt="Юлия Попова"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-
-                                {/* Decorative badge */}
-                                <motion.div
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ delay: 0.8, type: "spring" }}
-                                    className="absolute bottom-8 right-0 bg-white text-primary-dark px-5 py-2 rounded-full shadow-xl border-2 border-primary/20 text-sm font-bold flex items-center gap-2"
-                                >
-                                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-lg shadow-green-500/50"></span>
-                                    Онлайн
-                                </motion.div>
-                            </div>
-                        </motion.div>
-
-                    </div>
+        <section id="home" className="relative isolate overflow-hidden bg-neutral-50 pb-16 pt-32 sm:pb-24 sm:pt-40 lg:pt-44">
+            <AnimatedRays />
+            <div className="page-container relative z-10">
+                <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                        <div className="section-label"><Leaf size={15} /> Психолог · Тьютор · Профориентолог</div>
+                        <h1 className="mb-7 text-[72px] font-medium leading-[0.9] sm:text-[100px] xl:text-[120px]">Юлия<br /><span className="italic text-primary-dark">Попова</span><span className="text-accent">.</span></h1>
+                        <p className="max-w-lg text-base leading-relaxed text-neutral-600 sm:text-lg">Помогаю детям, подросткам и взрослым найти свой путь в учёбе, карьере и отношениях. Комплексный подход к решению ваших задач.</p>
+                        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                            <a href="#contacts" className="btn-primary">Записаться на консультацию <ArrowRight size={16} /></a>
+                            <a href="#about" className="btn-secondary">Познакомиться ближе</a>
+                        </div>
+                        <p className="mt-5 flex items-center gap-2 text-xs text-neutral-600"><Check size={13} className="text-primary" /> Первая встреча — бесплатно. Без обязательств.</p>
+                        <div className="mt-8 flex items-center gap-3">
+                            <a href="https://t.me/MissisPoppins" target="_blank" rel="noopener noreferrer" className="icon-link" aria-label="Telegram"><Telegram size={21} /></a>
+                            <a href="https://wa.me/79688274447" target="_blank" rel="noopener noreferrer" className="icon-link" aria-label="WhatsApp"><WhatsApp size={21} /></a>
+                            <a href="mailto:radio.popova@gmail.com" className="icon-link" aria-label="Email"><Envelope size={18} /></a>
+                            <span className="ml-2 max-w-32 text-xs leading-relaxed text-neutral-600">Начать можно<br />с простого сообщения</span>
+                        </div>
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} className="relative mx-auto w-full max-w-[460px] px-5 pb-8 sm:px-8">
+                        <div aria-hidden="true" className="absolute inset-x-5 bottom-4 top-3 rotate-6 rounded-[48%_48%_38%_38%] border border-primary/25 sm:inset-x-8" />
+                        <div className="relative aspect-[0.92] overflow-hidden rounded-[48%_48%_38%_38%] bg-primary-light/35 ring-8 ring-white/60">
+                            <img src="/images/popova-001.png" alt="Юлия Попова, психолог и тьютор" fetchPriority="high" width="512" height="512" className="h-full w-full object-cover" />
+                        </div>
+                        <div className="absolute bottom-2 left-0 flex items-center gap-3 rounded-2xl border border-primary-dark/10 bg-white px-5 py-4 shadow-[0_8px_24px_-16px_#31513C55] sm:left-1">
+                            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 text-primary-dark"><Message size={19} /></span>
+                            <div className="text-xs"><p className="font-bold text-neutral-900">В вашем темпе</p><p className="mt-0.5 text-neutral-600">С вниманием к вашей истории</p></div>
+                        </div>
+                        <span className="absolute right-0 top-10 inline-flex items-center gap-2 rounded-full border border-primary-dark/10 bg-white px-4 py-2 text-xs font-semibold text-primary-dark"><span className="h-1.5 w-1.5 rounded-full bg-primary" /> Онлайн</span>
+                    </motion.div>
+                </div>
+                <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-primary-dark/15 pt-6 text-xs font-medium text-neutral-600 sm:mt-20">
+                    <span>Учёба. Карьера. Отношения.</span><a href="#approach" className="inline-flex items-center gap-2 text-primary-dark">Найдём ваш путь вместе <ArrowRight size={13} /></a>
                 </div>
             </div>
         </section>

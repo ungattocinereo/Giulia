@@ -8,33 +8,33 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#8FA677', // Sage Green - main accent
-          dark: '#6B7D5A', // Darker for better contrast on white
-          light: '#A8BD91',
-          50: '#F4F7F2',
+          DEFAULT: '#6D8052',
+          dark: '#31513C',
+          light: '#B0C49E',
+          50: '#F1F5EB',
         },
         secondary: {
           DEFAULT: '#F2AA6B', // Apricot/Orange - warm accent
-          dark: '#D88A45', // Darker for better readability
+          dark: '#986332',
           light: '#F5C08F',
           50: '#FEF8F4',
         },
         accent: {
-          DEFAULT: '#D94032', // Red/Terracotta - strong accent
-          dark: '#B8301F', // Darker for better contrast
+          DEFAULT: '#D53A25',
+          dark: '#BB2B18',
           light: '#E36B5E',
         },
         neutral: {
-          50: '#FFFFFF', // Pure white for main background
-          100: '#F2E0C9', // Cream/Beige - subtle background variant
-          200: '#E8D6BF',
-          300: '#D4C2AB',
+          50: '#FBF8F1',
+          100: '#F3EFE5',
+          200: '#E2E5DA',
+          300: '#C3CBB8',
           400: '#A3A3A3',
           500: '#737373',
-          600: '#525252',
-          700: '#404040',
-          800: '#1a1a1a', // Near black for main text
-          900: '#0a0a0a', // Deep black for headings
+          600: '#556052',
+          700: '#455147',
+          800: '#2A4032',
+          900: '#203A2B',
         },
         coral: {
           DEFAULT: '#F2856D', // Coral - additional warm accent
@@ -43,8 +43,8 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Outfit', 'sans-serif'],
-        display: ['Outfit', 'sans-serif'],
+        sans: ['Manrope', 'sans-serif'],
+        display: ['Cormorant Garamond', 'Georgia', 'serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out forwards',

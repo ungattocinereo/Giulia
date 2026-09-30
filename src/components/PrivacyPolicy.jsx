@@ -1,5 +1,5 @@
 import React from 'react';
-import { X } from 'phosphor-react';
+import { Close } from './ui/icons';
 
 /**
  * PrivacyPolicy Component
@@ -15,13 +15,13 @@ export default function PrivacyPolicy({ onClose }) {
             <div className="bg-white rounded-2xl p-8 max-w-3xl w-full relative z-10 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-3xl font-bold text-neutral-800">Политика конфиденциальности</h2>
+                    <h2 className="pr-3 text-2xl font-medium text-neutral-800 sm:text-3xl">Политика конфиденциальности</h2>
                     <button
                         onClick={onClose}
-                        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+                        className="w-10 h-10 shrink-0 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
                         aria-label="Закрыть"
                     >
-                        <X size={24} />
+                        <Close size={20} />
                     </button>
                 </div>
 
@@ -173,7 +173,7 @@ export default function PrivacyPolicy({ onClose }) {
                 <div className="mt-8 pt-6 border-t border-gray-200">
                     <button
                         onClick={onClose}
-                        className="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-dark transition-colors"
+                        className="btn-primary w-full"
                     >
                         Закрыть
                     </button>
