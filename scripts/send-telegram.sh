@@ -3,11 +3,11 @@
 exec 2>&1
 
 # Абсолютный путь к .env (важно!)
-ENV_FILE="/home/greg/Giulia/.env"
+ENV_FILE="/srv/Giulia/.env"
 
 # Проверяем, что файл существует и читается
 if [ ! -f "$ENV_FILE" ]; then
-  echo '{"error":"ENV file not found at /home/greg/Giulia/.env"}'
+  echo '{"error":"ENV file not found at /srv/Giulia/.env"}'
   exit 1
 fi
 

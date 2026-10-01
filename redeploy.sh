@@ -4,7 +4,7 @@
 # Uses shared library at /usr/local/lib/deploy-lib.sh
 source /usr/local/lib/deploy-lib.sh
 
-deploy::init /home/greg/Giulia
+deploy::init /srv/Giulia
 deploy::fetch popovatalk_ru_alpha
 deploy::npm_ci
 deploy::build_atomic 'npx vite build --outDir' dist
