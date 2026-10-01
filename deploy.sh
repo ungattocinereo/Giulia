@@ -5,7 +5,7 @@ if [ "${1:---check}" != '--check' ] || [ "$#" -gt 1 ]; then
   printf '%s\n' 'Usage: ./deploy.sh [--check]' 'See DEPLOYMENT.md for the production update procedure.' >&2
   exit 2
 fi
-SERVER_HOST="${POPOVATALK_SSH_HOST:-hostup}"
+SERVER_HOST="${POPOVATALK_SSH_HOST:-sweden}"
 SERVER_PATH="${POPOVATALK_SERVER_PATH:-/srv/Giulia}"
 printf -v REMOTE_PATH '%q' "$SERVER_PATH"
 ssh -o BatchMode=yes -o ConnectTimeout=10 "$SERVER_HOST" "bash -s -- $REMOTE_PATH" <<'REMOTE'

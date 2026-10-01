@@ -2,13 +2,13 @@
 
 ## Действующая схема
 
-Проверено 30 сентября 2026 года:
+Повторно проверено 1 октября 2026 года:
 
 | Что | Значение |
 |---|---|
 | GitHub | `ungattocinereo/Giulia` |
 | Рабочая ветка | `popovatalk_ru_alpha` |
-| SSH на текущем компьютере | `hostup` |
+| SSH на текущем компьютере | `sweden` |
 | Папка на VPS | `/srv/Giulia` |
 | Сайт | `https://popovatalk.ru`, `https://www.popovatalk.ru` |
 | Публикуемая папка | `/srv/Giulia/dist` |
@@ -38,7 +38,7 @@ npm run check
 Сделать защищённую резервную копию **вне репозитория** на VPS. Она сохраняет текущие скрипты, секреты и опубликованную сборку:
 
 ```bash
-ssh hostup 'bash -s' <<'REMOTE'
+ssh sweden 'bash -s' <<'REMOTE'
 set -euo pipefail
 umask 077
 backup="/srv/backups/popovatalk/$(date +%Y%m%d-%H%M%S)"
@@ -66,7 +66,7 @@ REMOTE
 Если требуется ручной запуск уже опубликованного в рабочей ветке кода:
 
 ```bash
-ssh hostup 'bash /srv/Giulia/redeploy.sh'
+ssh sweden 'bash /srv/Giulia/redeploy.sh'
 ```
 
 Скрипт берёт блокировку, получает рабочую ветку, устанавливает зависимости, собирает сайт в `dist.new.*`, проверяет `index.html`, заменяет `dist` и проверяет доступность сайта. Проверка готового HTML, SEO, карточек и отсутствия Telegram-секретов теперь входит в саму сборку и срабатывает до замены `dist`. При провале HTTP-проверки библиотека восстанавливает предыдущую сборку. Рестарт Caddy или webhook для обычного обновления кода не требуется.
@@ -81,7 +81,7 @@ ssh hostup 'bash /srv/Giulia/redeploy.sh'
 
 ```bash
 mkdir -p .cache.local/seo
-ssh hostup 'cat /etc/caddy/Caddyfile' > .cache.local/seo/Caddyfile.current
+ssh sweden 'cat /etc/caddy/Caddyfile' > .cache.local/seo/Caddyfile.current
 node scripts/seo/prepare-caddy.js --input .cache.local/seo/Caddyfile.current --output .cache.local/seo/Caddyfile.next
 ```
 
@@ -109,6 +109,8 @@ npm run check:live
 Для полной проверки доставки отдельно отправить одну явно обозначенную тестовую заявку через рабочую форму с согласия владельца канала и проверить её появление в Telegram. Без такого теста подтверждены только доступность бота/канала и проверки обработчика с подменёнными сервисами.
 
 ## Откат
+
+Для обновления 1 октября 2026 года создана точка `rollback-popovatalk-2026-10-01` с действующими серверными путями. Полная защищённая копия: `/srv/backups/popovatalk/2026-10-01-before-update-014247`. Подробности — в [RELEASE_2026-10-01.md](RELEASE_2026-10-01.md).
 
 Если проблема возникла после успешной HTTP-проверки, автоматический откат уже не сработает. Можно восстановить `dist` из защищённой копии или конкретной `dist.prev.*`. Откат одной статики не восстанавливает обработчик Telegram: при проблеме с ним восстановить также соответствующий `scripts/send-telegram.sh` из той же резервной копии. Серверный `.env` заменять только если менялись его настройки.
 
