@@ -1,4 +1,4 @@
-import { site, sessions, services, faqs } from '../../src/content/site.js';
+import { site, sessions, services, serviceGuides, faqs } from '../../src/content/site.js';
 
 export const absolute = value => new URL(value, site.url).href;
 const personId = `${site.url}#person`;
@@ -7,7 +7,7 @@ const webpageId = `${site.url}#webpage`;
 export function structuredData() {
     const offers = [sessions[0], ...services].map((service, index) => ({
         '@type': 'Offer', '@id': `${site.url}#offer-${index}`,
-        name: service.title, url: `${site.url}#${index === 0 ? 'pricing' : 'comprehensive-approach'}`, priceCurrency: 'RUB',
+        name: service.title, url: `${site.url}#pricing`, priceCurrency: 'RUB',
         ...(service.fromPrice ? { priceSpecification: { '@type': 'PriceSpecification', minPrice: service.priceValue, priceCurrency: 'RUB' } } : { price: service.priceValue }),
         itemOffered: {
             '@type': 'Service', name: service.title,
@@ -45,6 +45,14 @@ export function structuredData() {
                 areaServed: { '@type': 'City', name: site.city },
                 hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Форматы работы и стоимость', itemListElement: offers },
             },
+            ...serviceGuides.map(guide => ({
+                '@type': 'Service', '@id': `${site.url}#${guide.id}-service`,
+                name: guide.title, serviceType: guide.title, url: `${site.url}#${guide.id}`,
+                provider: { '@id': personId }, areaServed: { '@type': 'City', name: site.city },
+                description: [guide.summary, ...guide.timing.map(time => `${time.term}: ${time.text}`), guide.frequency,
+                    guide.needsIntro, ...guide.needs.map(need => [need.title, need.text].filter(Boolean).join(' ')),
+                    guide.additionalNeed, `Кому подходит: ${guide.audience.join('; ')}.`].filter(Boolean).join(' '),
+            })),
             { '@type': 'FAQPage', '@id': `${site.url}#faq`, url: `${site.url}#faq`,
                 isPartOf: { '@id': webpageId }, inLanguage: 'ru-RU',
                 mainEntity: faqs.map(faq => ({ '@type': 'Question', name: faq.question,
@@ -94,9 +102,16 @@ export function sitemap() {
 }
 
 export function llmsSummary() {
-    return `# ${site.name} — психолог, тьютор, профориентолог\n\n> Официальный сайт: ${site.url} Консультации для детей, подростков и взрослых онлайн и очно в Москве. Первая встреча-знакомство: 20 минут, бесплатно.\n\n## Основные разделы\n\n- [О Юлии Поповой](${site.url}#about): психолог и тьютор, комплексный подход.\n- [Подход к работе](${site.url}#approach): психологические и образовательные задачи.\n- [Стоимость](${site.url}#pricing): действующие форматы и цены в рублях.\n- [Форматы работы](${site.url}#comprehensive-approach): индивидуальные и семейные сессии, профориентация, сопровождение.\n- [Частые вопросы](${site.url}#faq): знакомство, различия психолога и тьютора, выбор формата.\n- [Запись и контакты](${site.url}#contacts): форма записи и прямые контакты.\n\n## Дополнительные материалы\n\n- [Услуги, стоимость и ответы на вопросы](${absolute('/llms-full.txt')})\n\n## Контакты\n\n- Telegram: ${site.telegram}\n- WhatsApp: ${site.whatsapp}\n- Email: ${site.email}\n- Телефон: ${site.phone}\n`;
+    return `# ${site.name} — психолог, тьютор, профориентолог\n\n> Официальный сайт: ${site.url} Консультации для детей, подростков и взрослых онлайн и очно в Москве. Первая встреча-знакомство: 20 минут, бесплатно.\n\n## Основные разделы\n\n- [О Юлии Поповой](${site.url}#about): психолог и тьютор, комплексный подход.\n- [Подход к работе](${site.url}#approach): психологические и образовательные задачи.\n- [Стоимость](${site.url}#pricing): действующие форматы и цены в рублях.\n- [Как выбрать формат](${site.url}#comprehensive-approach): профориентация, тьюторское сопровождение и психологическая работа — сроки, запросы и кому подходит.\n- [Частые вопросы](${site.url}#faq): знакомство, различия психолога и тьютора, выбор формата.\n- [Запись и контакты](${site.url}#contacts): форма записи и прямые контакты.\n\n## Дополнительные материалы\n\n- [Услуги, стоимость и ответы на вопросы](${absolute('/llms-full.txt')})\n\n## Контакты\n\n- Telegram: ${site.telegram}\n- WhatsApp: ${site.whatsapp}\n- Email: ${site.email}\n- Телефон: ${site.phone}\n`;
 }
 
 export function llmsFull() {
-    return `${llmsSummary()}\n## Услуги и стоимость\n\n${[sessions[0], ...services].map(service => `### ${service.title}\n\n${service.description || service.text}\n\nСтоимость: ${service.price}. Длительность: ${service.duration}.${service.features ? `\n\nЧто входит: ${service.features.join('; ')}.` : ''}`).join('\n\n')}\n\n## Вопросы и ответы\n\n${faqs.map(faq => `### ${faq.question}\n\n${faq.paragraphs.join('\n\n')}`).join('\n\n')}\n`;
+    const guide = serviceGuides.map(service => [
+        `### ${service.title}`, service.summary,
+        `Время:\n${service.timing.map(time => `- ${time.term}: ${time.text}`).join('\n')}`,
+        service.frequency, `Потребность: ${service.needsTitle}.`, service.needsIntro,
+        service.needs.map(need => `- ${[need.title, need.text].filter(Boolean).join(' ')}`).join('\n'),
+        service.additionalNeed, `Кому подходит:\n${service.audience.map(person => `- ${person}`).join('\n')}`,
+    ].filter(Boolean).join('\n\n')).join('\n\n');
+    return `${llmsSummary()}\n## Как выбрать формат работы\n\n${guide}\n\n## Услуги и стоимость\n\n${[sessions[0], ...services].map(service => `### ${service.title}\n\n${service.description || service.text}\n\nСтоимость: ${service.price}. Длительность: ${service.duration}.${service.features ? `\n\nЧто входит: ${service.features.join('; ')}.` : ''}`).join('\n\n')}\n\n## Вопросы и ответы\n\n${faqs.map(faq => `### ${faq.question}\n\n${faq.paragraphs.join('\n\n')}`).join('\n\n')}\n`;
 }

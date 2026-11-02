@@ -5,8 +5,8 @@ import { cn } from '../utils/cn';
 const navItems = [
     { id: 'about', label: 'Обо мне' },
     { id: 'approach', label: 'Подход' },
+    { id: 'comprehensive-approach', label: 'Как выбрать' },
     { id: 'pricing', label: 'Стоимость' },
-    { id: 'comprehensive-approach', label: 'Форматы работы' },
     { id: 'faq', label: 'Вопросы' },
 ];
 

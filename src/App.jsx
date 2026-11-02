@@ -23,8 +23,8 @@ export default function App() {
         <Hero />
         <About onOpenModal={setActiveModal} />
         <MyApproach />
-        <Pricing onOpenModal={setActiveModal} />
         <ComprehensiveApproach />
+        <Pricing onOpenModal={setActiveModal} />
         <FAQ />
         <Contact onOpenPrivacyPolicy={() => setShowPrivacyPolicy(true)} />
       </main>

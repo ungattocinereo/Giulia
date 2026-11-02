@@ -2,9 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { CreditCard, Check, Calendar, Message, Compass, ArrowRight, Star } from './ui/icons';
 
-import { sessions } from '../content/site';
+import { sessions, services } from '../content/site';
 
 const sessionIcons = { message: Message, compass: Compass };
+const fullSupport = services.find(service => service.highlight === 'premium');
 
 export default function Pricing({ onOpenModal }) {
     return (
@@ -43,6 +44,19 @@ export default function Pricing({ onOpenModal }) {
                         {['Глубокий анализ интересов и способностей', 'Подбор подходящих профессий и сфер', 'Конкретный план действий'].map(text => <li key={text} className="flex items-start gap-3"><Check size={15} className="mt-1 shrink-0 text-primary-light" />{text}</li>)}
                     </ul>
                 </motion.div>
+                <div className="mt-6 grid gap-6 rounded-3xl border border-primary-dark/10 bg-white p-7 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10">
+                    <div>
+                        <p className="section-label !mb-3"><Compass size={13} /> Комплексное сопровождение</p>
+                        <h3 className="mb-3 text-xl font-semibold text-neutral-900">{fullSupport.title}</h3>
+                        <p className="mb-4 text-sm text-neutral-600">{fullSupport.description}</p>
+                        <ul className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-neutral-600">{fullSupport.features.map(feature => <li key={feature} className="flex items-center gap-2"><Check size={10} className="text-primary" />{feature}</li>)}</ul>
+                    </div>
+                    <div className="flex flex-col items-start lg:items-end">
+                        <p className="text-3xl font-semibold text-neutral-900">{fullSupport.price}</p>
+                        <p className="mb-4 mt-1 text-xs text-neutral-600">Длительность: {fullSupport.duration.toLowerCase()}</p>
+                        <a href="#contacts" className="btn-secondary">Обсудить пакет <ArrowRight size={13} /></a>
+                    </div>
+                </div>
                 <div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-2xl border border-primary-dark/10 bg-white/60 p-6 sm:flex-row sm:items-center">
                     <div className="flex items-center gap-4"><CreditCard size={22} className="shrink-0 text-primary" /><div><p className="text-sm font-semibold text-neutral-900">Оплата картой или через СБП</p><p className="mt-1 text-xs text-neutral-600">Visa · Mastercard · Мир · СБП</p></div></div>
                     <button type="button" onClick={() => onOpenModal('payment-policy')} className="text-link text-left">Правила отмены и переносов <ArrowRight size={12} /></button>

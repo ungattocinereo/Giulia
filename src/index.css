@@ -54,3 +54,40 @@
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .rays-motion { animation: none !important; }
 }
+
+/* Shared comparison on desktop; progressive disclosure on narrow screens. */
+.service-guide-grid { display: grid; gap: 20px; align-items: stretch; }
+.service-guide-card { --guide-surface: #f1f5eb; --guide-ink: #31513c; min-width: 0; overflow: hidden; border: 1px solid #31513c1a; border-radius: 24px; background: #fff; scroll-margin-top: 112px; }
+.service-guide-apricot { --guide-surface: #fef4ea; --guide-ink: #986332; }
+.service-guide-sand { --guide-surface: #f6f1e9; --guide-ink: #725b42; }
+.service-guide-heading { padding: 26px; background: var(--guide-surface); color: var(--guide-ink); }
+.service-guide-icon { display: flex; height: 44px; width: 44px; align-items: center; justify-content: center; border-radius: 50%; background: #ffffffb3; }
+.service-guide-title { color: #203a2b; font-size: 24px; font-weight: 600; line-height: 1.3; overflow-wrap: break-word; }
+.service-guide-timing { padding: 24px 26px; border-bottom: 1px solid #31513c1a; }
+.service-guide-label { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: #556052; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.service-guide-frequency { display: inline-block; margin-top: 18px; border-radius: 8px; padding: 7px 10px; background: var(--guide-surface); color: var(--guide-ink); font-size: 12px; font-weight: 600; }
+.service-guide-details { display: flex; min-width: 0; flex-direction: column; }
+.service-guide-needs { padding: 24px 26px 28px; }
+.service-guide-audience { margin-top: auto; border-top: 1px solid #31513c1a; padding: 24px 26px; }
+.service-guide-contact { display: flex; min-height: 56px; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 26px; border-top: 1px solid #31513c1a; color: #31513c; background: var(--guide-surface); font-size: 13px; font-weight: 700; transition: background 180ms; }
+.service-guide-contact:hover { background: #e7eddd; }
+.service-guide-toggle:focus-visible, .service-guide-contact:focus-visible { outline-offset: -5px; }
+.service-guide-toggle, .service-guide-mobile-summary { display: none; }
+@media (min-width: 1024px) {
+  .service-guide-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .service-guide-card { display: grid; grid-template-rows: auto 1fr; }
+  .service-guide-heading { min-height: 287px; }
+  .service-guide-title { min-height: 62.4px; }
+  .service-guide-timing { min-height: 269px; }
+  .service-guide-audience { min-height: 166px; }
+}
+@media (max-width: 1023px) {
+  .service-guide-heading { padding: 22px; }
+  .service-guide-decoration { margin-bottom: 12px; }
+  .service-guide-icon { width: 36px; height: 36px; }
+  .service-guide-title { font-size: 22px; }
+  .service-guide[data-enhanced="true"] .service-guide-summary { display: none; }
+  .service-guide[data-enhanced="true"] .service-guide-mobile-summary { display: block; margin-top: 16px; font-size: 12px; line-height: 1.6; color: #31513c; }
+  .service-guide[data-enhanced="true"] .service-guide-toggle { display: flex; min-height: 58px; width: 100%; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 26px; background: var(--guide-surface); color: #31513c; text-align: left; font-size: 13px; font-weight: 700; }
+  .service-guide[data-enhanced="true"] .service-guide-card[data-expanded="false"] .service-guide-details { display: none; }
+}
