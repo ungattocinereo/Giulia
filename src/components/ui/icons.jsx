@@ -6,6 +6,7 @@ import {
     faArrowRight, faBars, faXmark, faPlus, faMinus, faCheck, faStar, faCrown,
     faCreditCard, faCompass, faRoute, faLightbulb, faCalendarDays, faLeaf,
     faEnvelope, faPhone, faCommentDots, faCircleQuestion, faSpinner, faShieldHeart,
+    faArrowLeft, faRotateLeft, faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 
 config.autoAddCss = false;
@@ -39,3 +40,6 @@ export const Message = createIcon(faCommentDots);
 export const CircleQuestion = createIcon(faCircleQuestion);
 export const Spinner = createIcon(faSpinner);
 export const Shield = createIcon(faShieldHeart);
+export const ArrowLeft = createIcon(faArrowLeft);
+export const Restart = createIcon(faRotateLeft);
+export const People = createIcon(faUsers);

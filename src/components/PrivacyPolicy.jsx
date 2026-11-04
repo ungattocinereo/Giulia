@@ -1,5 +1,6 @@
 import React from 'react';
 import { Close } from './ui/icons';
+import Dialog from './ui/Dialog';
 
 /**
  * PrivacyPolicy Component
@@ -7,15 +8,11 @@ import { Close } from './ui/icons';
  */
 export default function PrivacyPolicy({ onClose }) {
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
-            <div
-                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-                onClick={onClose}
-            ></div>
-            <div className="bg-white rounded-2xl p-8 max-w-3xl w-full relative z-10 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
+        <Dialog onClose={onClose} labelledBy="privacy-policy-title" className="privacy-dialog">
+            <div className="p-6 sm:p-8">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="pr-3 text-2xl font-medium text-neutral-800 sm:text-3xl">Политика конфиденциальности</h2>
+                    <h2 id="privacy-policy-title" tabIndex={-1} data-dialog-focus className="pr-3 text-2xl font-medium text-neutral-800 sm:text-3xl">Политика конфиденциальности</h2>
                     <button
                         onClick={onClose}
                         className="w-10 h-10 shrink-0 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
@@ -50,6 +47,7 @@ export default function PrivacyPolicy({ onClose }) {
                             <li>Контактный телефон</li>
                             <li>Адрес электронной почты</li>
                             <li>Telegram username или другие контактные данные мессенджеров</li>
+                            <li>Ответы и результат теста подбора консультации — если пользователь отправляет заявку из теста</li>
                         </ul>
                     </section>
 
@@ -71,6 +69,7 @@ export default function PrivacyPolicy({ onClose }) {
                         <p className="leading-relaxed">
                             Персональные данные собираются при заполнении форм обратной связи на Сайте.
                             Пользователь предоставляет свои данные добровольно, заполняя соответствующие поля форм.
+                            Ответы и результат теста передаются вместе с заявкой только после нажатия кнопки отправки и предоставления согласия.
                         </p>
                     </section>
 
@@ -164,7 +163,7 @@ export default function PrivacyPolicy({ onClose }) {
 
                     <section className="pt-4 border-t border-gray-200">
                         <p className="text-sm text-gray-500 italic">
-                            Дата последнего обновления: 19 ноября 2025 года
+                            Дата последнего обновления: 4 ноября 2026 года
                         </p>
                     </section>
                 </div>
@@ -179,6 +178,6 @@ export default function PrivacyPolicy({ onClose }) {
                     </button>
                 </div>
             </div>
-        </div>
+        </Dialog>
     );
 }

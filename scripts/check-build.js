@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url';
 import { brotliDecompressSync, gunzipSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
 import { site, services, faqs } from '../src/content/site.js';
+import { quizQuestions, quizResults } from '../src/content/consultationQuiz.js';
 
 async function filesIn(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -43,6 +44,14 @@ export async function verifyBuild(output = 'dist') {
   assert.match(index, /Москве/, 'Confirmed in-person location must be visible');
   assert.ok(!index.includes('30-40 минут') && !index.includes('30–40 минут'), 'Outdated intro duration');
   for (const service of services) assert.ok(index.includes(service.price), `Missing visible price: ${service.title}`);
+  const picker = index.match(/<section id="comprehensive-approach"[\s\S]*?<\/section>/)?.[0] || '';
+  assert.ok(picker.includes('Узнать, какая консультация нужна'), 'Quiz entry is missing from static HTML');
+  assert.ok(picker.includes('<noscript>'), 'Quiz needs a no-JS contact fallback');
+  for (const result of Object.values(quizResults)) {
+    assert.ok(picker.includes(`id="${result.anchor}"`) && picker.includes(result.teaser), `Missing visible service: ${result.title}`);
+  }
+  const llmsFull = await readFile(path.join(output, 'llms-full.txt'), 'utf8');
+  for (const question of Object.values(quizQuestions)) assert.ok(llmsFull.includes(question.title), 'Quiz discovery content is incomplete');
 
   const schemaText = index.match(/<script id="structured-data" type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1];
   assert.ok(schemaText, 'JSON-LD must be in static HTML');

@@ -17,7 +17,7 @@ export default function Hero() {
                         <p className="max-w-lg text-base leading-relaxed text-neutral-600 sm:text-lg">Помогаю детям, подросткам и взрослым найти свой путь в учёбе, карьере и отношениях. Комплексный подход к решению ваших задач. Онлайн и очно в Москве.</p>
                         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                             <a href="#contacts" className="btn-primary">Записаться на консультацию <ArrowRight size={16} /></a>
-                            <a href="#about" className="btn-secondary">Познакомиться ближе</a>
+                            <a href="#comprehensive-approach" className="btn-secondary">Какую консультацию выбрать?</a>
                         </div>
                         <p className="mt-5 flex items-center gap-2 text-xs text-neutral-600"><Check size={13} className="text-primary" /> Первая встреча — бесплатно. Без обязательств.</p>
                         <div className="mt-8 flex items-center gap-3">

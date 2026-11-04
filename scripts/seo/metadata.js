@@ -1,4 +1,5 @@
 import { site, sessions, services, serviceGuides, faqs } from '../../src/content/site.js';
+import { quizQuestions, quizResults } from '../../src/content/consultationQuiz.js';
 
 export const absolute = value => new URL(value, site.url).href;
 const personId = `${site.url}#person`;
@@ -45,13 +46,11 @@ export function structuredData() {
                 areaServed: { '@type': 'City', name: site.city },
                 hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Форматы работы и стоимость', itemListElement: offers },
             },
-            ...serviceGuides.map(guide => ({
-                '@type': 'Service', '@id': `${site.url}#${guide.id}-service`,
-                name: guide.title, serviceType: guide.title, url: `${site.url}#${guide.id}`,
+            ...Object.values(quizResults).map(result => ({
+                '@type': 'Service', '@id': `${site.url}#${result.anchor}-service`,
+                name: result.title, serviceType: result.title, url: `${site.url}#${result.anchor}`,
                 provider: { '@id': personId }, areaServed: { '@type': 'City', name: site.city },
-                description: [guide.summary, ...guide.timing.map(time => `${time.term}: ${time.text}`), guide.frequency,
-                    guide.needsIntro, ...guide.needs.map(need => [need.title, need.text].filter(Boolean).join(' ')),
-                    guide.additionalNeed, `Кому подходит: ${guide.audience.join('; ')}.`].filter(Boolean).join(' '),
+                description: result.teaser,
             })),
             { '@type': 'FAQPage', '@id': `${site.url}#faq`, url: `${site.url}#faq`,
                 isPartOf: { '@id': webpageId }, inLanguage: 'ru-RU',
@@ -102,10 +101,12 @@ export function sitemap() {
 }
 
 export function llmsSummary() {
-    return `# ${site.name} — психолог, тьютор, профориентолог\n\n> Официальный сайт: ${site.url} Консультации для детей, подростков и взрослых онлайн и очно в Москве. Первая встреча-знакомство: 20 минут, бесплатно.\n\n## Основные разделы\n\n- [О Юлии Поповой](${site.url}#about): психолог и тьютор, комплексный подход.\n- [Подход к работе](${site.url}#approach): психологические и образовательные задачи.\n- [Стоимость](${site.url}#pricing): действующие форматы и цены в рублях.\n- [Как выбрать формат](${site.url}#comprehensive-approach): профориентация, тьюторское сопровождение и психологическая работа — сроки, запросы и кому подходит.\n- [Частые вопросы](${site.url}#faq): знакомство, различия психолога и тьютора, выбор формата.\n- [Запись и контакты](${site.url}#contacts): форма записи и прямые контакты.\n\n## Дополнительные материалы\n\n- [Услуги, стоимость и ответы на вопросы](${absolute('/llms-full.txt')})\n\n## Контакты\n\n- Telegram: ${site.telegram}\n- WhatsApp: ${site.whatsapp}\n- Email: ${site.email}\n- Телефон: ${site.phone}\n`;
+    return `# ${site.name} — психолог, тьютор, профориентолог\n\n> Официальный сайт: ${site.url} Консультации для детей, подростков и взрослых онлайн и очно в Москве. Первая встреча-знакомство: 20 минут, бесплатно.\n\n## Основные разделы\n\n- [О Юлии Поповой](${site.url}#about): психолог и тьютор, комплексный подход.\n- [Подход к работе](${site.url}#approach): психологические и образовательные задачи.\n- [Стоимость](${site.url}#pricing): действующие форматы и цены в рублях.\n- [Как выбрать формат](${site.url}#comprehensive-approach): короткий тест для родителей подростков; профориентация, тьюторское сопровождение, индивидуальная работа с психологом или семейная терапия.\n- [Частые вопросы](${site.url}#faq): знакомство, различия психолога и тьютора, выбор формата.\n- [Запись и контакты](${site.url}#contacts): форма записи и прямые контакты.\n\n## Дополнительные материалы\n\n- [Услуги, стоимость и ответы на вопросы](${absolute('/llms-full.txt')})\n\n## Контакты\n\n- Telegram: ${site.telegram}\n- WhatsApp: ${site.whatsapp}\n- Email: ${site.email}\n- Телефон: ${site.phone}\n`;
 }
 
 export function llmsFull() {
+    const describeNode = node => node.startsWith('result:') ? `результат: ${quizResults[node.slice(7)].title}` : `вопрос: ${quizQuestions[node].title}`;
+    const quiz = `Тест для родителей подростков «Какая консультация нужна?» доступен на ${site.url}#comprehensive-approach. До 5 вопросов, результат сразу. Это ориентир для выбора формата; уточнить его можно на бесплатной встрече-знакомстве за 20 минут. Контакты, ответы и результат отправляются Юлии только после заполнения и отправки формы с согласием.\n\nНачальный вопрос: ${quizQuestions.age.title}\n\n${Object.values(quizQuestions).map(question => `- ${question.title}\n  Да → ${describeNode(question.yes)}.\n  Нет → ${describeNode(question.no)}.`).join('\n\n')}\n\n${Object.values(quizResults).map(result => `### ${result.title}\n\n${result.summary}\n\n${result.details.join(' ')}`).join('\n\n')}`;
     const guide = serviceGuides.map(service => [
         `### ${service.title}`, service.summary,
         `Время:\n${service.timing.map(time => `- ${time.term}: ${time.text}`).join('\n')}`,
@@ -113,5 +114,5 @@ export function llmsFull() {
         service.needs.map(need => `- ${[need.title, need.text].filter(Boolean).join(' ')}`).join('\n'),
         service.additionalNeed, `Кому подходит:\n${service.audience.map(person => `- ${person}`).join('\n')}`,
     ].filter(Boolean).join('\n\n')).join('\n\n');
-    return `${llmsSummary()}\n## Как выбрать формат работы\n\n${guide}\n\n## Услуги и стоимость\n\n${[sessions[0], ...services].map(service => `### ${service.title}\n\n${service.description || service.text}\n\nСтоимость: ${service.price}. Длительность: ${service.duration}.${service.features ? `\n\nЧто входит: ${service.features.join('; ')}.` : ''}`).join('\n\n')}\n\n## Вопросы и ответы\n\n${faqs.map(faq => `### ${faq.question}\n\n${faq.paragraphs.join('\n\n')}`).join('\n\n')}\n`;
+    return `${llmsSummary()}\n## Подбор консультации по ответам\n\n${quiz}\n\n## О направлениях работы\n\n${guide}\n\n## Услуги и стоимость\n\n${[sessions[0], ...services].map(service => `### ${service.title}\n\n${service.description || service.text}\n\nСтоимость: ${service.price}. Длительность: ${service.duration}.${service.features ? `\n\nЧто входит: ${service.features.join('; ')}.` : ''}`).join('\n\n')}\n\n## Вопросы и ответы\n\n${faqs.map(faq => `### ${faq.question}\n\n${faq.paragraphs.join('\n\n')}`).join('\n\n')}\n`;
 }

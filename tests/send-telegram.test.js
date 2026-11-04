@@ -4,6 +4,7 @@ import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'nod
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { formatTelegramMessage } from '../src/utils/telegram.js';
 
 const source = readFileSync(new URL('../scripts/send-telegram.sh', import.meta.url), 'utf8');
 const validPayload = { message: '<b>Заявка</b>\nКавычки " и &amp; текст', recaptchaToken: 'fake-captcha-token' };
@@ -53,6 +54,16 @@ test('server reads configuration relative to its own directory and keeps webhook
   const body = JSON.parse(telegram[telegram.indexOf('--data') + 1]);
   assert.deepEqual(body, { chat_id: '-12345', text: validPayload.message, parse_mode: 'HTML' });
   assert.ok(result.calls.every(args => args.includes('--max-time')));
+});
+test('server forwards quiz result and answers unchanged to mocked Telegram', () => {
+  const message = formatTelegramMessage({ name: 'Проверка теста', method: 'telegram', contact: '@test_parent', message: '', consent: true, quizAnswers: [false, true, false] });
+  const result = run({ ...validPayload, message });
+  assert.equal(result.status, 0);
+  const request = result.calls[1];
+  const body = JSON.parse(request[request.indexOf('--data') + 1]);
+  assert.equal(body.text, message);
+  assert.ok(body.text.includes('Рекомендация сайта: Индивидуальная работа с психологом'));
+  assert.ok(body.text.includes('Готова ли семья участвовать в семейной терапии? — Нет'));
 });
 for (const payload of ['', '{bad-json', '{}', '[]', '{} {}', '{"message":7,"recaptchaToken":"x"}', '{"message":"x","recaptchaToken":true}', '{"message":"   ","recaptchaToken":"x"}', { ...validPayload, message: 'x'.repeat(32769) }]) {
   test(`server rejects malformed payload (${typeof payload === 'string' ? payload.slice(0, 35) : 'oversize'}) before any outbound request`, () => {

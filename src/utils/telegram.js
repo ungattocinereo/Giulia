@@ -1,4 +1,5 @@
 import { CONTACT_LIMITS, formatTelegram, getContactError } from './validation.js';
+import { getQuizReport, QUIZ_MESSAGE_LIMIT } from '../content/consultationQuiz.js';
 
 const RECAPTCHA_SITE_KEY = '6LcMs18sAAAAAOhd3sYSLVgPxEhmUFVJOw59lJrh';
 
@@ -10,13 +11,15 @@ export function formatTelegramMessage(formData) {
   const name = formData.name.trim();
   const contact = formData.contact.trim();
   const message = (formData.message || '').trim();
+  const quiz = formData.quizAnswers === undefined ? null : getQuizReport(formData.quizAnswers);
   if (!name || name.length > CONTACT_LIMITS.name) {
     throw new Error('Укажите имя (до 100 символов)');
   }
   const contactError = getContactError(formData.method, contact);
   if (contactError) throw new Error(contactError);
-  if (message.length > CONTACT_LIMITS.message) {
-    throw new Error('Сообщение должно содержать не более 3000 символов');
+  const messageLimit = quiz ? QUIZ_MESSAGE_LIMIT : CONTACT_LIMITS.message;
+  if (message.length > messageLimit) {
+    throw new Error(`Сообщение должно содержать не более ${messageLimit} символов`);
   }
   const methods = {
     telegram: { emoji: '📱', name: 'Telegram' },
@@ -32,6 +35,7 @@ export function formatTelegramMessage(formData) {
 👤 <b>Имя:</b> ${escapeHtml(name)}
 ${method.emoji} <b>Контакт:</b> ${escapeHtml(normalizedContact)}
 💬 <b>Способ связи:</b> ${method.name}
+${quiz ? `\n🧭 <b>Заявка после подбора консультации</b>\n${escapeHtml(quiz.text)}\n` : ''}
 ${message ? `\n📝 <b>Сообщение:</b>\n${escapeHtml(message)}` : ''}
 
 ⏰ <b>Дата:</b> ${new Date().toLocaleString('ru-RU', {
