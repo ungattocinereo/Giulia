@@ -30,7 +30,7 @@ async function tapScan(page, xFraction, yFraction) {
 }
 
 for (const [engine, deviceName] of [[webkit, 'iPhone 13'], [chromium, 'Pixel 7']]) {
-    test(`${deviceName} · ${engine.name()} · fullscreen diploma viewer`, async t => {
+    test(`${deviceName} · ${engine.name()} · diploma detail card`, async t => {
         const browser = await engine.launch();
         t.after(() => browser.close());
         const page = await browser.newPage({ ...devices[deviceName] });
@@ -49,22 +49,29 @@ for (const [engine, deviceName] of [[webkit, 'iPhone 13'], [chromium, 'Pixel 7']
             for (const [index, doc] of documents.entries()) {
                 const opener = index % 2 === 0 ? slide : enlarge;
                 await opener.scrollIntoViewIfNeeded();
-                const beforeY = await page.evaluate(() => scrollY);
+                // The browser may scroll the opener into view before delivering a tap.
+                await opener.evaluate(el => el.addEventListener('touchstart', () => {
+                    el.dataset.tapScrollY = String(window.scrollY);
+                }, { once: true, passive: true }));
                 await opener.tap();
                 await dialog.waitFor();
                 assert.equal(await dialog.locator('img').getAttribute('src'), doc.src);
-                assert.equal(await dialog.getByRole('heading').textContent(), doc.title);
+                assert.equal(await dialog.getByRole('heading').textContent(), doc.shortTitle);
+                assert.equal(await dialog.locator('.document-description').innerText(), doc.description);
                 assert.equal(await page.evaluate(() => document.body.style.overflow), 'hidden');
-                const bounds = await dialog.boundingBox();
-                assert.equal(bounds.x, 0);
-                assert.equal(bounds.y, 0);
-                assert.equal(Math.round(bounds.height), page.viewportSize().height);
-                assert.equal(Math.round(bounds.width), page.viewportSize().width);
+                const bounds = await dialog.locator('.document-viewer').boundingBox();
+                const viewport = page.viewportSize();
+                assert.ok(bounds.x >= 8 && bounds.width <= viewport.width - 16);
+                assert.ok(bounds.height < viewport.height * 0.9 && bounds.y > 0);
+                const caption = await dialog.locator('.document-description').boundingBox();
+                assert.ok(caption.y >= bounds.y - 2 && caption.y + caption.height <= bounds.y + bounds.height);
                 await tapScan(page, ...points[index % points.length]);
                 await dialog.waitFor({ state: 'detached' });
                 assert.equal(await slide.locator('img').getAttribute('src'), doc.src);
                 assert.equal(await opener.evaluate(el => el === document.activeElement), true);
-                assert.ok(Math.abs(await page.evaluate(() => scrollY) - beforeY) <= 2);
+                const beforeY = Number(await opener.getAttribute('data-tap-scroll-y'));
+                const afterY = await page.evaluate(() => scrollY);
+                assert.ok(Math.abs(afterY - beforeY) <= 2, `${doc.title}: scroll ${beforeY} → ${afterY}`);
                 assert.notEqual(await page.evaluate(() => document.body.style.overflow), 'hidden');
                 await next.tap();
             }
@@ -78,7 +85,7 @@ for (const [engine, deviceName] of [[webkit, 'iPhone 13'], [chromium, 'Pixel 7']
             for (let attempt = 0; attempt < 3; attempt++) {
                 await page.touchscreen.tap(x, y);
                 await dialog.waitFor();
-                await page.touchscreen.tap(x, y);
+                await tapScan(page, 0.5, 0.5);
                 await dialog.waitFor({ state: 'detached' });
                 assert.equal(await slide.locator('img').getAttribute('src'), documents[0].src);
             }
@@ -94,8 +101,14 @@ for (const [engine, deviceName] of [[webkit, 'iPhone 13'], [chromium, 'Pixel 7']
             const close = dialog.getByRole('button', { name: 'Закрыть документ', exact: true });
             const box = await close.boundingBox();
             assert.ok(box.width >= 44 && box.height >= 44 && box.x + box.width <= 568);
+            const card = await dialog.locator('.document-viewer').boundingBox();
+            const description = await dialog.locator('.document-description').boundingBox();
+            assert.ok(description.y + description.height <= card.y + card.height && card.height < 320);
             await page.keyboard.press('ArrowRight');
             assert.equal(await dialog.locator('img').getAttribute('src'), documents.at(-1).src);
+            await page.touchscreen.tap(3, 3);
+            await dialog.waitFor({ state: 'detached' });
+            await enlarge.tap();
             await close.tap();
             await dialog.waitFor({ state: 'detached' });
             await slide.tap();

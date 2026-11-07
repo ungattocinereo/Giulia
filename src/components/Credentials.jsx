@@ -74,18 +74,23 @@ function DocumentGallery() {
             </div>
             <AnimatePresence>
                 {expanded && <Dialog key="document-viewer" onClose={() => setExpanded(false)} labelledBy="document-heading" className="document-dialog">
-                    <motion.div className="document-viewer"
-                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        transition={{ duration: reduceMotion ? 0 : 0.16 }}>
-                        <div className="document-viewer-header">
-                            <h3 id="document-heading" className="font-semibold">{active.title}</h3>
-                            <button type="button" className="document-close" aria-label="Закрыть документ" data-dialog-focus onClick={() => setExpanded(false)}><Close size={18} /></button>
-                        </div>
-                        <button type="button" className="document-scan" aria-label="Закрыть увеличенный диплом" onClick={() => setExpanded(false)}>
-                            <motion.img src={active.src} alt={active.title} draggable="false"
-                                initial={{ scale: 0.97 }} animate={{ scale: 1 }} exit={{ scale: 0.98 }}
-                                transition={{ duration: reduceMotion ? 0 : 0.18, ease: 'easeOut' }} />
-                        </button>
+                    <motion.div className="document-scrim" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        transition={{ duration: reduceMotion ? 0 : 0.16 }}
+                        onClick={event => { if (event.target === event.currentTarget) setExpanded(false); }}>
+                        <motion.div className="document-viewer"
+                            initial={{ y: 14 }} animate={{ y: 0 }} exit={{ y: 10 }}
+                            transition={{ duration: reduceMotion ? 0 : 0.18, ease: 'easeOut' }}>
+                            <div className="document-viewer-header">
+                                <div>
+                                    <h3 id="document-heading" className="credential-caption-title">{active.shortTitle}</h3>
+                                    <p className="document-description">{active.description}</p>
+                                </div>
+                                <button type="button" className="document-close" aria-label="Закрыть документ" data-dialog-focus onClick={() => setExpanded(false)}><Close size={18} /></button>
+                            </div>
+                            <button type="button" className="document-scan" aria-label="Закрыть увеличенный диплом" onClick={() => setExpanded(false)}>
+                                <img src={active.src} alt={active.title} draggable="false" />
+                            </button>
+                        </motion.div>
                     </motion.div>
                 </Dialog>}
             </AnimatePresence>
