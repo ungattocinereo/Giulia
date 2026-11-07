@@ -1,6 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Menu, Close, ArrowRight, Telegram, WhatsApp } from './ui/icons';
 import { cn } from '../utils/cn';
+import { lockPageScroll } from '../utils/scrollLock';
+
+const useModalEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 const navItems = [
     { id: 'about', label: 'Обо мне' },
@@ -28,17 +31,16 @@ export default function Header() {
         return () => observer.disconnect();
     }, []);
 
-    useEffect(() => {
+    useModalEffect(() => {
         const dialog = dialogRef.current;
         if (!isMenuOpen) { if (dialog.open) dialog.close(); return; }
+        const unlockScroll = lockPageScroll();
         dialog.showModal();
-        const previousOverflow = document.body.style.overflow;
-        document.body.style.overflow = 'hidden';
         const desktop = window.matchMedia('(min-width: 1024px)');
         const closeOnDesktop = () => { if (desktop.matches) setIsMenuOpen(false); };
         desktop.addEventListener('change', closeOnDesktop);
         return () => {
-            document.body.style.overflow = previousOverflow;
+            unlockScroll();
             desktop.removeEventListener('change', closeOnDesktop);
             if (dialog.open) dialog.close();
             menuButtonRef.current?.focus({ preventScroll: true });

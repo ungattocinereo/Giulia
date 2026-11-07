@@ -120,3 +120,78 @@ for (const [engine, deviceName] of [[webkit, 'iPhone 13'], [chromium, 'Pixel 7']
         assert.deepEqual(errors, []);
     });
 }
+
+for (const engine of [webkit, chromium]) {
+    test(`${engine.name()} · classic scrollbar does not shift the page or fixed header`, async t => {
+        const browser = await engine.launch({ ignoreDefaultArgs: ['--hide-scrollbars'] });
+        t.after(() => browser.close());
+        const page = await browser.newPage({ viewport: { width: 1512, height: 854 }, reducedMotion: 'reduce' });
+        page.setDefaultTimeout(6000);
+        await page.route('**/*', route => route.request().url().startsWith(origin + '/') ? route.continue() : route.abort());
+        await page.goto(origin + '/#education');
+        await page.addStyleTag({ content: 'html::-webkit-scrollbar { width: 18px; } html::-webkit-scrollbar-thumb { background: #999; }' });
+        await page.evaluate(() => document.fonts.ready);
+        const enlarge = page.getByRole('button', { name: 'Увеличить', exact: true });
+        const dialog = page.getByRole('dialog');
+
+        const measure = () => page.evaluate(() => Object.fromEntries(
+            ['header > div', '#education > .page-container', '.credential-gallery'].map(selector => {
+                const rect = document.querySelector(selector).getBoundingClientRect();
+                return [selector, { x: rect.x, width: rect.width }];
+            }),
+        ));
+
+        // WebKit updates custom viewport scrollbar metrics after the first scroll-lock cycle.
+        await enlarge.click();
+        await dialog.waitFor();
+        await page.keyboard.press('Escape');
+        await dialog.waitFor({ state: 'detached' });
+
+        for (const width of [1512, 1024]) {
+            await page.setViewportSize({ width, height: 854 });
+            await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+            await enlarge.scrollIntoViewIfNeeded();
+            const scrollbar = await page.evaluate(() => innerWidth - document.documentElement.clientWidth);
+            assert.ok(scrollbar > 0, 'The regression must exercise a classic scrollbar that takes up space.');
+            const before = await measure();
+            for (let cycle = 0; cycle < 2; cycle++) {
+                await enlarge.click();
+                await dialog.waitFor();
+                assert.deepEqual(await measure(), before, `Layout shifted on open at ${width}px`);
+                await page.keyboard.press('Escape');
+                await dialog.waitFor({ state: 'detached' });
+                assert.deepEqual(await measure(), before, `Layout shifted on close at ${width}px`);
+            }
+        }
+
+        await page.setViewportSize({ width: 1000, height: 854 });
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        const beforeMenu = await measure();
+        await page.getByRole('button', { name: 'Открыть меню', exact: true }).click();
+        await page.locator('#mobile-navigation[open]').waitFor();
+        assert.deepEqual(await measure(), beforeMenu, 'Layout shifted on menu open');
+        await page.getByRole('button', { name: 'Закрыть меню', exact: true }).click();
+        await page.locator('#mobile-navigation[open]').waitFor({ state: 'hidden' });
+        assert.deepEqual(await measure(), beforeMenu, 'Layout shifted on menu close');
+
+        const startQuiz = page.getByRole('button', { name: 'Узнать, какая консультация нужна', exact: true });
+        await startQuiz.scrollIntoViewIfNeeded();
+        const beforeQuiz = await measure();
+        await startQuiz.click();
+        const quiz = page.locator('.quiz-dialog[open]');
+        await quiz.getByRole('button', { name: 'Да', exact: true }).click();
+        await quiz.getByRole('button', { name: 'Нет, нужно определиться скорее', exact: true }).click();
+        await quiz.getByRole('button', { name: 'политикой конфиденциальности', exact: true }).click();
+        const privacy = page.locator('.privacy-dialog[open]');
+        await privacy.waitFor();
+        assert.deepEqual(await measure(), beforeQuiz, 'Nested dialog shifted the page');
+        await privacy.getByRole('button', { name: 'Закрыть', exact: true }).first().click();
+        await privacy.waitFor({ state: 'detached' });
+        assert.equal(await page.evaluate(() => document.body.style.position), 'fixed');
+        assert.deepEqual(await measure(), beforeQuiz, 'Closing the nested dialog unlocked the page');
+        await quiz.getByRole('button', { name: 'Закрыть тест', exact: true }).click();
+        await quiz.waitFor({ state: 'hidden' });
+        assert.notEqual(await page.evaluate(() => document.body.style.position), 'fixed');
+        assert.deepEqual(await measure(), beforeQuiz, 'Closing the final dialog shifted the page');
+    });
+}

@@ -1,19 +1,21 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { lockPageScroll } from '../../utils/scrollLock';
+
+const useModalEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 export default function Dialog({ open = true, onClose, labelledBy, className = '', children }) {
     const ref = useRef(null);
 
-    useEffect(() => {
+    useModalEffect(() => {
         if (!open) return;
         const dialog = ref.current;
         const previousFocus = document.activeElement;
-        const previousOverflow = document.body.style.overflow;
+        const unlockScroll = lockPageScroll();
         dialog.showModal();
-        document.body.style.overflow = 'hidden';
         dialog.querySelector('[data-dialog-focus]')?.focus({ preventScroll: true });
         return () => {
             dialog.close();
-            document.body.style.overflow = previousOverflow;
+            unlockScroll();
             if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
         };
     }, [open]);
