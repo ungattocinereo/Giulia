@@ -7,6 +7,7 @@ export default function Hero() {
     return (
         <section id="home" className="relative isolate overflow-hidden bg-neutral-50 pb-16 pt-32 sm:pb-24 sm:pt-40 lg:pt-44">
             <AnimatedRays />
+            <div className="hero-halftone" aria-hidden="true" />
             <div className="page-container relative z-10">
                 <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
                     <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>

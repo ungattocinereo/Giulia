@@ -146,3 +146,42 @@
   .quiz-guide-footer { flex-direction: row; justify-content: space-between; align-items: baseline; gap: 30px; }
   .quiz-guide-footer > a { flex-shrink: 0; }
 }
+
+.credential-section { background: #f6f4ed; }
+.education-intro { display: grid; align-items: end; gap: 22px 50px; }
+@media (min-width: 800px) { .education-intro { grid-template-columns: 1fr 1fr; } }
+.credential-gallery { min-width: 0; margin: clamp(24px, 4vw, 56px) auto clamp(36px, 5vw, 72px); }
+.credential-stage { --slide-width: min(58%, 590px); height: clamp(260px, 37vw, 415px); position: relative; isolation: isolate; overflow: hidden; touch-action: pan-y pinch-zoom; }
+.credential-slot { position: absolute; inset-block: 0; left: 50%; margin-left: calc(var(--slide-width) / -2); width: var(--slide-width); perspective: 1200px; pointer-events: none; }
+.credential-sheet { display: block; width: 100%; height: 100%; transform-style: preserve-3d; pointer-events: auto; }
+.credential-sheet[data-offset="0"] { cursor: zoom-in; }
+.credential-sheet img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.credential-captions { display: grid; max-width: 720px; margin: 18px auto 0; text-align: center; }
+.credential-caption { grid-area: 1 / 1; }
+.credential-caption[aria-hidden="true"] { visibility: hidden; }
+.credential-caption-title { display: block; letter-spacing: -.025em; font-family: 'Cormorant Garamond', serif; font-size: clamp(24px, 3vw, 34px); line-height: 1.08; font-weight: 600; color: #203a2b; text-wrap: balance; }
+.credential-caption p { margin-top: 6px; color: #53634d; font-size: 13px; }
+.credential-toolbar { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 12px auto 0; font-size: 12px; color: #53634d; }
+.credential-toolbar .text-link { min-height: 44px; margin-left: 6px; }
+.site-dialog.document-dialog { max-width: 1100px; }
+.document-dialog img { max-height: 70dvh; }
+.credential-history { border-bottom: 1px solid #31513c29; }
+.credential-entry { display: grid; align-items: baseline; grid-template-columns: minmax(110px,.42fr) minmax(180px,1fr) 1.6fr; gap: 12px 28px; border-top: 1px solid #31513c29; padding: 19px 0; }
+.credential-entry > span { color: #526546; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.credential-entry h4 { font-weight: 700; color: #294331; }
+.credential-entry p, .course-list { font-size: 14px; }
+.course-list summary { width: fit-content; padding: 8px 0; cursor: pointer; color: #31513c; font-weight: 600; }
+.course-list ul { list-style: disc; padding-left: 20px; }
+.course-list li + li { margin-top: 5px; }
+@media (max-width: 700px) {
+  .credential-stage { --slide-width: 79%; height: clamp(175px, 59vw, 350px); margin-inline: -20px; }
+  .credential-entry { grid-template-columns: 1fr; gap: 4px; padding: 16px 0; }
+}
+
+.session-card { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; padding: clamp(24px, 3vw, 38px); border: 0; border-radius: 24px; color: #274332; background: radial-gradient(90% 145px at 16% 0%, #dfe7d4, transparent), #fffefa; box-shadow: 0 16px 40px -30px #273e2f5c; }
+.session-card[data-featured="true"] { background: radial-gradient(100% 180px at 16% 0%, #506e50, transparent), #294636; color: #fffdf6; }
+.session-card::before, .hero-halftone { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: radial-gradient(currentColor .75px, transparent 1px); background-size: 4px 4px; mask-image: radial-gradient(ellipse at top left, #000, transparent 58%); opacity: .13; }
+.session-icon { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border: 1px solid #788b7055; border-radius: 12px; }
+.session-duration { display: flex; align-items: center; gap: 8px; margin: 12px 0 20px; padding-bottom: 18px; border-bottom: 1px solid #788b7045; font-size: 13px; }
+
+.hero-halftone { z-index: 0; color: #496442; opacity: .2; mask-image: radial-gradient(ellipse 38% 68% at 0% 9%, #000 2%, transparent 96%), radial-gradient(ellipse 30% 52% at 100% 82%, #000 4%, transparent 95%); }

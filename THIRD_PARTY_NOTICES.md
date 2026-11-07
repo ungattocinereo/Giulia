@@ -2,6 +2,8 @@
 
 AnimatedRays and FaqAccordion were installed from [VengeanceUI](https://github.com/Ashutoshx7/VengeanceUI) using shadcn and adapted for this project.
 
+The document gallery and consultation cards adapt the perspective carousel and pricing section from the same project.
+
 MIT License
 
 Copyright (c) 2025-2026 Ashutoshx7

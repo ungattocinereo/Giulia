@@ -49,9 +49,15 @@ export default function Header() {
         <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
             <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-10 focus:rounded-lg focus:bg-white focus:p-3">Перейти к содержимому</a>
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-full border border-primary-dark/10 bg-neutral-50/95 p-2.5 pl-3 shadow-[0_8px_30px_-20px_#31513C66] backdrop-blur-md lg:pl-5">
-                <a href="#home" className="flex shrink-0 items-center gap-3" aria-label="Юлия Попова — на главную">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-dark text-sm font-semibold tracking-tight text-white">ЮП</span>
-                    <span className="text-sm font-bold text-neutral-900 sm:text-base">Юлия Попова<span className="hidden text-[10px] font-medium tracking-wide text-neutral-600 sm:block">Психолог и тьютор</span></span>
+                <a href="#home" className="flex shrink-0 items-center gap-1.5" aria-label="Юлия Попова — на главную">
+                    <picture className="flex w-16 shrink-0 items-center sm:w-[72px]">
+                        <source media="(prefers-reduced-motion: reduce)" srcSet="/images/monogram.png" />
+                        <img src="/images/monogram.gif" alt="" width="282" height="131" className="block h-auto w-full" />
+                    </picture>
+                    <span className="flex flex-col gap-px text-sm font-bold leading-tight text-neutral-900 sm:text-base sm:leading-tight">
+                        Юлия Попова
+                        <span className="hidden text-[10px] font-medium leading-tight tracking-wide text-neutral-600 sm:block">Психолог и тьютор</span>
+                    </span>
                 </a>
                 <nav aria-label="Основная навигация" className="hidden items-center gap-1 lg:flex">
                     {navItems.map(item => (

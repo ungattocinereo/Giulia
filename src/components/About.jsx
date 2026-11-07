@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Leaf } from './ui/icons';
 import { motion } from 'framer-motion';
 
-export default function About({ onOpenModal }) {
+export default function About() {
     const videoRef = useRef(null);
     const [isVideoReady, setIsVideoReady] = useState(false);
 
@@ -72,13 +72,13 @@ export default function About({ onOpenModal }) {
                                 Первую встречу вы можете получить бесплатно, чтобы познакомиться и понять, какой формат работы подойдёт вам лучше всего.
                             </p>
                         </div>
-                        <button
-                            onClick={() => onOpenModal('about-details')}
+                        <a
+                            href="#education"
                             className="btn-secondary mt-8"
                         >
-                            Подробнее обо мне
+                            Образование и дипломы
                             <ArrowRight size={20} />
-                        </button>
+                        </a>
                     </motion.div>
 
                     {/* Photo Placeholder */}
