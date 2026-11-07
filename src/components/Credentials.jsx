@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { documents, education, interests } from '../content/credentials';
 import Dialog from './ui/Dialog';
 import { ArrowLeft, ArrowRight, Close, Plus } from './ui/icons';
@@ -14,7 +14,13 @@ function DocumentGallery() {
     const active = documents[current];
     const move = step => setCurrent(index => (index + step + count) % count);
 
+    const openDocument = event => {
+        event.currentTarget.focus({ preventScroll: true });
+        setExpanded(true);
+    };
+
     const navigate = event => {
+        if (event.target.closest('dialog')) return;
         if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
             event.preventDefault();
             if (event.target.closest('.credential-stage')) event.currentTarget.focus({ preventScroll: true });
@@ -45,7 +51,7 @@ function DocumentGallery() {
                             initial={false} transition={transition}
                             animate={{ rotateY: -offset * 60, scale: isActive ? 1 : 0.85 }}
                             aria-label={isActive ? `Увеличить документ «${doc.title}»` : `Показать документ «${doc.title}»`}
-                            tabIndex={isActive ? 0 : -1} onClick={() => isActive ? setExpanded(true) : setCurrent(index)}>
+                            tabIndex={isActive ? 0 : -1} onClick={isActive ? openDocument : () => setCurrent(index)}>
                             <img src={doc.src} alt={doc.title} loading="lazy" decoding="async" draggable="false" />
                         </motion.button>
                     </motion.div>;
@@ -64,15 +70,25 @@ function DocumentGallery() {
                 <button type="button" className="icon-link" aria-label="Предыдущий документ" onClick={() => move(-1)}><ArrowLeft size={15} /></button>
                 <span className="tabular-nums">{current + 1} / {count}</span>
                 <button type="button" className="icon-link" aria-label="Следующий документ" onClick={() => move(1)}><ArrowRight size={15} /></button>
-                <button type="button" className="text-link" onClick={() => setExpanded(true)}>Увеличить <Plus size={12} /></button>
+                <button type="button" className="text-link" onClick={openDocument}>Увеличить <Plus size={12} /></button>
             </div>
-            {expanded && <Dialog onClose={() => setExpanded(false)} labelledBy="document-heading" className="document-dialog">
-                <div className="flex items-center justify-between gap-4 p-4 sm:px-6">
-                    <h3 id="document-heading" className="font-semibold">{active.title}</h3>
-                    <button type="button" className="icon-link shrink-0" aria-label="Закрыть документ" data-dialog-focus onClick={() => setExpanded(false)}><Close size={18} /></button>
-                </div>
-                <img src={active.src} alt={active.title} className="min-h-0 w-full object-contain" />
-            </Dialog>}
+            <AnimatePresence>
+                {expanded && <Dialog key="document-viewer" onClose={() => setExpanded(false)} labelledBy="document-heading" className="document-dialog">
+                    <motion.div className="document-viewer"
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        transition={{ duration: reduceMotion ? 0 : 0.16 }}>
+                        <div className="document-viewer-header">
+                            <h3 id="document-heading" className="font-semibold">{active.title}</h3>
+                            <button type="button" className="document-close" aria-label="Закрыть документ" data-dialog-focus onClick={() => setExpanded(false)}><Close size={18} /></button>
+                        </div>
+                        <button type="button" className="document-scan" aria-label="Закрыть увеличенный диплом" onClick={() => setExpanded(false)}>
+                            <motion.img src={active.src} alt={active.title} draggable="false"
+                                initial={{ scale: 0.97 }} animate={{ scale: 1 }} exit={{ scale: 0.98 }}
+                                transition={{ duration: reduceMotion ? 0 : 0.18, ease: 'easeOut' }} />
+                        </button>
+                    </motion.div>
+                </Dialog>}
+            </AnimatePresence>
         </div>
     );
 }
